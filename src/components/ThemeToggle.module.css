@@ -1,0 +1,32 @@
+.btn {
+  position: fixed;
+  top: clamp(14px, 3vw, 24px);
+  right: clamp(14px, 3vw, 24px);
+  z-index: 50;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  color: var(--text-dim);
+  backdrop-filter: blur(8px);
+  transition:
+    transform 0.2s var(--ease-out),
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn:hover {
+  color: var(--spark);
+  border-color: var(--spark);
+  transform: rotate(-18deg);
+  box-shadow: 0 0 0 1px var(--glow-spark), 0 10px 30px -14px var(--glow-spark);
+}
+
+.btn svg {
+  width: 17px;
+  height: 17px;
+}

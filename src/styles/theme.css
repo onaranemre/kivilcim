@@ -1,0 +1,274 @@
+/* ------------------------------------------------------------------ *
+ *  Kıvılcım — tema tokenları
+ *  Varsayılan: krem / açık.  Koyu: sıcak antrasit.
+ *  Sıra: :root (açık) → sistem-koyu → [data-theme] override.
+ * ------------------------------------------------------------------ */
+
+:root {
+  --bg-0: #f4efe2;
+  --bg-1: #efe8d6;
+  --paper: #fbf7ec;
+
+  --surface: rgba(60, 45, 25, 0.035);
+  --surface-strong: rgba(60, 45, 25, 0.06);
+  --line: rgba(55, 42, 24, 0.14);
+  --line-strong: rgba(55, 42, 24, 0.26);
+
+  --text: #2c2620;
+  --text-dim: #6a6052;
+  --text-faint: #9c9585;
+
+  --spark: #c8622f;
+  --spark-soft: #b1531f;
+  --calm: #5f8a80;
+
+  --glow-spark: rgba(200, 98, 47, 0.24);
+  --glow-calm: rgba(95, 138, 128, 0.22);
+
+  --inset: rgba(50, 38, 20, 0.05);
+  --spark-tint: rgba(200, 98, 47, 0.1);
+  --on-accent: #fbf7ec;
+
+  --grain-opacity: 0.05;
+  --grain-blend: multiply;
+
+  --halo-1: rgba(200, 98, 47, 0.1);
+  --halo-2: rgba(95, 138, 128, 0.08);
+  --halo-3: rgba(224, 178, 92, 0.14);
+
+  --radius: 18px;
+  --radius-sm: 11px;
+
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
+  --font-mono: 'Space Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg-0: #191612;
+    --bg-1: #201c17;
+    --paper: #221e18;
+
+    --surface: rgba(255, 250, 240, 0.035);
+    --surface-strong: rgba(255, 250, 240, 0.065);
+    --line: rgba(255, 248, 235, 0.1);
+    --line-strong: rgba(255, 248, 235, 0.2);
+
+    --text: #ede5d5;
+    --text-dim: #a89e8c;
+    --text-faint: #6f6656;
+
+    --spark: #f0925f;
+    --spark-soft: #e07f4c;
+    --calm: #83bab0;
+
+    --glow-spark: rgba(240, 146, 95, 0.3);
+    --glow-calm: rgba(131, 186, 176, 0.26);
+
+    --inset: rgba(0, 0, 0, 0.24);
+    --spark-tint: rgba(240, 146, 95, 0.13);
+    --on-accent: #201c17;
+
+    --grain-opacity: 0.055;
+    --grain-blend: overlay;
+
+    --halo-1: rgba(240, 146, 95, 0.12);
+    --halo-2: rgba(131, 186, 176, 0.08);
+    --halo-3: rgba(120, 90, 190, 0.1);
+
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg-0: #191612;
+  --bg-1: #201c17;
+  --paper: #221e18;
+
+  --surface: rgba(255, 250, 240, 0.035);
+  --surface-strong: rgba(255, 250, 240, 0.065);
+  --line: rgba(255, 248, 235, 0.1);
+  --line-strong: rgba(255, 248, 235, 0.2);
+
+  --text: #ede5d5;
+  --text-dim: #a89e8c;
+  --text-faint: #6f6656;
+
+  --spark: #f0925f;
+  --spark-soft: #e07f4c;
+  --calm: #83bab0;
+
+  --glow-spark: rgba(240, 146, 95, 0.3);
+  --glow-calm: rgba(131, 186, 176, 0.26);
+
+  --inset: rgba(0, 0, 0, 0.24);
+  --spark-tint: rgba(240, 146, 95, 0.13);
+  --on-accent: #201c17;
+
+  --grain-opacity: 0.055;
+  --grain-blend: overlay;
+
+  --halo-1: rgba(240, 146, 95, 0.12);
+  --halo-2: rgba(131, 186, 176, 0.08);
+  --halo-3: rgba(120, 90, 190, 0.1);
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100dvh;
+  background:
+    radial-gradient(120% 90% at 12% -10%, var(--halo-1), transparent 55%),
+    radial-gradient(90% 80% at 100% 0%, var(--halo-2), transparent 50%),
+    radial-gradient(140% 120% at 50% 120%, var(--halo-3), transparent 60%),
+    var(--bg-0);
+  color: var(--text);
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  /* Tüm arayüz metni küçük harf (Türkçe: lang="tr" ile İ→i, I→ı). */
+  text-transform: lowercase;
+}
+
+/* İnce film grain dokusu */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: var(--grain-blend);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+textarea {
+  font-family: inherit;
+}
+
+::selection {
+  background: var(--spark);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--spark);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 340;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+/* Ortak yardımcı sınıflar */
+.app {
+  max-width: 940px;
+  margin: 0 auto;
+  padding: clamp(28px, 6vw, 72px) clamp(18px, 5vw, 40px) 120px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: lowercase;
+  color: var(--text-faint);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 13px 22px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  transition:
+    transform 0.18s var(--ease-out),
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--spark);
+  box-shadow: 0 0 0 1px var(--glow-spark), 0 12px 40px -18px var(--glow-spark);
+}
+
+.btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.btn:disabled {
+  opacity: 0.34;
+}
+
+.btn--primary {
+  background: linear-gradient(180deg, var(--spark), var(--spark-soft));
+  border-color: transparent;
+  color: var(--paper);
+  font-weight: 700;
+  box-shadow: 0 14px 44px -16px var(--glow-spark);
+}
+
+.btn--primary:hover:not(:disabled) {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 18px 60px -14px var(--glow-spark);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: var(--line);
+  color: var(--text-dim);
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
+  font-size: 12px;
+  padding: 9px 15px;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--line-strong);
+  box-shadow: none;
+}
