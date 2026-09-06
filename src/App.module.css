@@ -1,0 +1,79 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+  margin-bottom: clamp(28px, 6vw, 52px);
+}
+
+.mark {
+  display: inline-flex;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--text-faint);
+  letter-spacing: 0.3em;
+}
+
+.mark span:nth-child(2) {
+  color: var(--spark);
+}
+.mark span:nth-child(4) {
+  color: var(--calm);
+}
+
+.title {
+  font-size: clamp(34px, 8vw, 60px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.title em {
+  font-style: italic;
+  color: var(--spark);
+}
+
+.stage {
+  animation: rail-in 0.5s var(--ease-out) 1;
+}
+
+.stageNav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.stageIntro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.stageIntro h2 {
+  font-size: clamp(20px, 4vw, 26px);
+}
+
+.stageIntro span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--text-faint);
+}
+
+.foot {
+  margin-top: 60px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  color: var(--text-faint);
+}
