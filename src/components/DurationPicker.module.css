@@ -16,7 +16,7 @@
 
 .num {
   font-family: var(--font-display);
-  font-size: clamp(58px, 15vw, 104px);
+  font-size: clamp(66px, 17vw, 118px);
   font-weight: 300;
   line-height: 0.9;
   color: var(--text);
