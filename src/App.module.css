@@ -67,13 +67,3 @@
   text-transform: lowercase;
   color: var(--text-faint);
 }
-
-.foot {
-  margin-top: 60px;
-  text-align: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: lowercase;
-  color: var(--text-faint);
-}

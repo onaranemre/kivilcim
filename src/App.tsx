@@ -142,8 +142,6 @@ export default function App() {
           <SessionTimer timer={timer} results={results} onRestart={restart} />
         </section>
       )}
-
-      <footer className={styles.foot}>zar · söz · sayaç</footer>
     </main>
   )
 }

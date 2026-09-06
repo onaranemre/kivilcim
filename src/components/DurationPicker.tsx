@@ -18,10 +18,6 @@ export function DurationPicker({ initial = 30, confirmLabel = 'zarları getir �
 
   return (
     <div className={styles.wrap}>
-      <p className={styles.lead}>
-        Ne kadar vaktin var? Sayaç, tüm zarlar atıldıktan sonra başlar.
-      </p>
-
       <div className={styles.readout}>
         <span className={styles.num}>{value}</span>
         <span className={styles.unit}>dakika</span>
