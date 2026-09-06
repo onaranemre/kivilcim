@@ -2,9 +2,9 @@ import { useState } from 'react'
 import styles from './DurationPicker.module.css'
 
 const MIN = 15
-const MAX = 90
+const MAX = 60
 const STEP = 5
-const PRESETS = [15, 30, 45, 60, 90]
+const PRESETS = [15, 30, 45, 60]
 
 interface Props {
   initial?: number
@@ -37,7 +37,7 @@ export function DurationPicker({ initial = 30, confirmLabel = 'zarlarÄ± getir â†
         />
         <div className={styles.ticks}>
           <span>15dk</span>
-          <span>90dk</span>
+          <span>60dk</span>
         </div>
       </div>
 

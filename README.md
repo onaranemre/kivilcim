@@ -1,7 +1,7 @@
 # Kıvılcım
 
 Şarkı yazma blokajını kıran, oyun hissi veren Türkçe bir web uygulaması.
-Müzisyen bir süre (15–90 dk) seçer, beş yaratıcı zarı tek tek atar
+Müzisyen bir süre (15–60 dk) seçer, beş yaratıcı zarı tek tek atar
 (**Tarz, Duygu, Kural, Perspektif, Kelime**), sonuçlar ekranda birikir ve
 "Şarkıya Başla" ile geri sayım başlar.
 
