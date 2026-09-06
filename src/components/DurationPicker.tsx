@@ -14,7 +14,7 @@ interface Props {
 
 export function DurationPicker({ initial = 30, confirmLabel = 'zarları getir →', onConfirm }: Props) {
   const [value, setValue] = useState(initial)
-  const pct = ((value - MIN) / (MAX - MIN)) * 100
+  const fill = (value - MIN) / (MAX - MIN)
 
   return (
     <div className={styles.wrap}>
@@ -33,7 +33,7 @@ export function DurationPicker({ initial = 30, confirmLabel = 'zarları getir �
           value={value}
           aria-label="Süre (dakika)"
           onChange={(e) => setValue(Number(e.target.value))}
-          style={{ ['--pct' as string]: `${pct}%` }}
+          style={{ ['--fill' as string]: String(fill) }}
         />
         <div className={styles.ticks}>
           <span>15dk</span>

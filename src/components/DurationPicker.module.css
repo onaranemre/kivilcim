@@ -9,13 +9,14 @@
 
 .readout {
   display: flex;
-  align-items: baseline;
+  flex-direction: column;
+  align-items: center;
   gap: 10px;
 }
 
 .num {
   font-family: var(--font-display);
-  font-size: clamp(72px, 20vw, 140px);
+  font-size: clamp(58px, 15vw, 104px);
   font-weight: 300;
   line-height: 0.9;
   color: var(--text);
@@ -25,8 +26,8 @@
 
 .unit {
   font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.24em;
+  font-size: 12px;
+  letter-spacing: 0.28em;
   text-transform: lowercase;
   color: var(--text-faint);
 }
@@ -39,6 +40,9 @@
 }
 
 .range {
+  --thumb: 22px;
+  /* Dolgu, tam olarak topuzun merkezinde biter (uçlardaki topuz payını hesaba katar). */
+  --stop: calc(var(--fill, 0) * (100% - var(--thumb)) + var(--thumb) / 2);
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -46,9 +50,9 @@
   border-radius: 999px;
   background: linear-gradient(
     to right,
-    var(--spark) 0%,
-    var(--spark) var(--pct, 0%),
-    var(--line) var(--pct, 0%),
+    var(--spark) 0,
+    var(--spark) var(--stop),
+    var(--line) var(--stop),
     var(--line) 100%
   );
   outline: none;
