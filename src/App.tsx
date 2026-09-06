@@ -104,10 +104,6 @@ export default function App() {
               </button>
             )}
           </div>
-          <div className={styles.stageIntro}>
-            <h2>zarları at</h2>
-            <span>{minutes} dakikalık tur</span>
-          </div>
           <DiceBoard
             results={results}
             wordCat={wordCat}
