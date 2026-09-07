@@ -7,7 +7,7 @@ import {
 } from 'react'
 import type { DieMeta } from '../data/dice'
 import { poolFor } from '../data/dice'
-import { buzz, pick, pickDifferent, sample } from '../lib/random'
+import { buzz, pickDifferent, sample } from '../lib/random'
 import { useRoller } from '../hooks/useRoller'
 import type { DieHandle, DieResult } from '../types'
 import { DieFace, randomFace } from './DieFace'
@@ -26,19 +26,11 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
   const pool = poolFor(meta.id)
   const draw = meta.draw ?? 1
   const { phase, tick, isRolling, roll } = useRoller()
-  const [stream, setStream] = useState(() => drawLabel())
   const [face, setFace] = useState(() => randomFace())
 
-  function drawLabel(): string {
-    return draw > 1 ? sample(pool, draw).join(' · ') : pick(pool)
-  }
-
-  // Sallanma sürerken hem değer hem zar yüzü akar.
+  // Atış sürerken zar yüzü döner; ekranda başka bir şey yok.
   useEffect(() => {
-    if (phase !== 'shaking') return
-    setStream(drawLabel())
-    setFace((f) => randomFace(f))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (phase === 'shaking') setFace((f) => randomFace(f))
   }, [tick, phase])
 
   const doRoll = useCallback(() => {
@@ -80,29 +72,17 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
     >
       {phase === 'settling' && <span className={styles.ripple} aria-hidden />}
 
-      <div className={styles.head}>
-        <span
-          className={`${styles.face} ${phase === 'shaking' ? styles.tumbling : ''} ${
-            phase === 'settling' ? styles.landing : ''
-          }`}
-        >
-          <DieFace face={face} />
-        </span>
-        <span className={styles.title}>{meta.title}</span>
-        <span className={styles.reroll} aria-hidden>
-          {result && !isRolling ? '↻' : ''}
-        </span>
-      </div>
-
       <div className={styles.body} aria-live="polite">
         {phase === 'shaking' ? (
-          <span className={styles.stream}>{stream}</span>
+          <span className={`${styles.face} ${styles.tumbling}`} aria-hidden>
+            <DieFace face={face} />
+          </span>
         ) : result ? (
           <span className={styles.value} key={result.label}>
             {result.label}
           </span>
         ) : (
-          <span className={styles.hint}>{meta.hint}</span>
+          <span className={styles.label}>{meta.title}</span>
         )}
       </div>
     </article>

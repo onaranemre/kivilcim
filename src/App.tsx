@@ -26,10 +26,17 @@ export default function App() {
   const { effective, toggle } = useTheme()
   const timer = useCountdown()
 
-  const hasProgress = timer.active || Object.values(results).some(Boolean)
+  const anyRolled = Object.values(results).some(Boolean)
+  const hasProgress = timer.active || anyRolled
 
   const commit = (dieId: DieId, result: DieResult) => {
     setResults((prev) => ({ ...prev, [dieId]: result }))
+  }
+
+  // Turu sıfırla ama zar ekranında kal.
+  const clearDice = () => {
+    timer.stop()
+    setResults(EMPTY_RESULTS)
   }
 
   const confirmDuration = (m: number) => {
@@ -64,17 +71,6 @@ export default function App() {
 
       {screen === 'setup' && (
         <section className={styles.stage} key="setup">
-          {hasProgress && (
-            <div className={styles.stageNav}>
-              <button
-                type="button"
-                className="btn btn--ghost"
-                onClick={() => setScreen('rolling')}
-              >
-                ← zarlara dön
-              </button>
-            </div>
-          )}
           <DurationPicker
             initial={minutes}
             confirmLabel={hasProgress ? 'devam →' : 'zarları getir →'}
@@ -93,13 +89,9 @@ export default function App() {
             >
               ← süreyi değiştir
             </button>
-            {timer.active && (
-              <button
-                type="button"
-                className="btn btn--ghost"
-                onClick={() => setScreen('session')}
-              >
-                sayaca dön →
+            {anyRolled && (
+              <button type="button" className="btn btn--ghost" onClick={clearDice}>
+                ↺ sıfırla
               </button>
             )}
           </div>

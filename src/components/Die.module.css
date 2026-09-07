@@ -1,10 +1,8 @@
 .card {
   position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 16px;
-  min-height: 172px;
-  padding: 20px 22px 24px;
+  min-height: 168px;
+  padding: 24px 22px;
   border-radius: var(--radius);
   border: none;
   background: var(--glass-gloss), var(--glass-bg);
@@ -80,18 +78,38 @@
   animation: ripple-out 0.52s var(--ease-out) 1 forwards;
 }
 
-/* Tüm kart içeriği ortalı; ↻ ikonu sağ üst köşede duruyor */
-.head {
+/*
+ * Kartın içinde tek bir metin, dikey ve yatay tam ortada:
+ *  boşken zar adı (tarz / duygu…), atarken akan değer, sonra sonuç.
+ */
+.body {
+  flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 14px;
+  min-width: 0;
+  text-align: center;
 }
 
+.label,
+.value {
+  font-family: var(--font-display);
+  font-size: clamp(21px, 3.6vw, 30px);
+  line-height: 1.18;
+  color: var(--text);
+}
+
+.value {
+  animation: value-flicker 0.42s var(--ease-out) 1;
+}
+
+/* Atış sırasında dönen zar — tek görünen şey */
 .face {
   flex: none;
-  width: 30px;
-  height: 30px;
+  width: 42px;
+  height: 42px;
   display: block;
   color: var(--spark);
 }
@@ -115,66 +133,4 @@
 
 .tumbling {
   animation: face-tumble 0.34s linear infinite;
-}
-
-.landing {
-  animation: face-land 0.42s var(--ease-out) 1;
-}
-
-.title {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.24em;
-  text-transform: lowercase;
-  /* Alt satirdaki sonuc yazisiyla ayni renk ki etiket de rahat okunsun. */
-  color: var(--text);
-}
-
-.reroll {
-  position: absolute;
-  top: 22px;
-  right: 22px;
-  font-size: 15px;
-  line-height: 1;
-  color: var(--text-faint);
-  opacity: 0.5;
-  transition: opacity 0.2s ease, color 0.2s ease;
-}
-
-.card:hover .reroll {
-  opacity: 1;
-  color: var(--spark);
-}
-
-.body {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 64px;
-  text-align: center;
-}
-
-.hint {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: clamp(15px, 2.4vw, 17px);
-  line-height: 1.35;
-  color: var(--text-faint);
-}
-
-.stream {
-  font-family: var(--font-display);
-  font-size: clamp(20px, 3.4vw, 28px);
-  line-height: 1.16;
-  color: var(--text-dim);
-  animation: stream-blur 0.14s linear infinite;
-}
-
-.value {
-  font-family: var(--font-display);
-  font-size: clamp(21px, 3.6vw, 30px);
-  line-height: 1.16;
-  color: var(--text);
-  animation: value-flicker 0.42s var(--ease-out) 1;
 }
