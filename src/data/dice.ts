@@ -1,22 +1,20 @@
 export type DieId = 'style' | 'emotion' | 'rule' | 'perspective' | 'word'
 
-export type WordCategoryId = 'somut' | 'duygusal' | 'fiil' | 'siirsel' | 'karisik'
-
 export interface DieMeta {
   id: DieId
   title: string
-  /** Kısa, gizemli alt başlık. */
+  /** Kart boşken görünen kısa, gizemli ipucu. */
   hint: string
-  /** Zar üstündeki sembol. */
-  glyph: string
+  /** Kelime zarı gibi tek atışta birden fazla sonuç verenler için. */
+  draw?: number
 }
 
 export const DICE: DieMeta[] = [
-  { id: 'style', title: 'Tarz', hint: 'Şarkı neye benzesin?', glyph: '◈' },
-  { id: 'emotion', title: 'Duygu', hint: 'Nereden besleniyor?', glyph: '❍' },
-  { id: 'rule', title: 'Kural', hint: 'Kendine bir sınır çiz.', glyph: '⌘' },
-  { id: 'perspective', title: 'Perspektif', hint: 'Kimin ağzından?', glyph: '◐' },
-  { id: 'word', title: 'Kelime', hint: 'Üç kelime. Kaçış yok.', glyph: '✶' },
+  { id: 'style', title: 'Tarz', hint: 'Şarkı neye benzesin?' },
+  { id: 'emotion', title: 'Duygu', hint: 'Nereden besleniyor?' },
+  { id: 'rule', title: 'Kural', hint: 'Kendine bir sınır çiz.' },
+  { id: 'perspective', title: 'Perspektif', hint: 'Kimin ağzından?' },
+  { id: 'word', title: 'Kelime', hint: 'Üç kelime. Kaçış yok.', draw: 3 },
 ]
 
 export const STYLES: string[] = [
@@ -95,12 +93,6 @@ export const PERSPECTIVES: string[] = [
   'Vazgeçtiğin bir hayal',
 ]
 
-interface WordCategory {
-  id: WordCategoryId
-  label: string
-  words: string[]
-}
-
 const SOMUT: string[] = [
   'anahtar', 'pencere', 'kibrit', 'perde', 'asfalt', 'bardak', 'çakmak', 'radyo',
   'valiz', 'köprü', 'lamba', 'iskele', 'duman', 'tren', 'ceket', 'ayna', 'kaldırım',
@@ -136,17 +128,10 @@ const SIIRSEL: string[] = [
   'kavis', 'çığ', 'nakış', 'közleme', 'sarnıç', 'yad', 'ıssızlık', 'şafak',
 ]
 
-export const WORD_CATEGORIES: WordCategory[] = [
-  { id: 'somut', label: 'Somut', words: SOMUT },
-  { id: 'duygusal', label: 'Duygusal', words: DUYGUSAL },
-  { id: 'fiil', label: 'Fiil', words: FIIL },
-  { id: 'siirsel', label: 'Şiirsel', words: SIIRSEL },
-  {
-    id: 'karisik',
-    label: 'Karışık',
-    words: Array.from(new Set([...SOMUT, ...DUYGUSAL, ...FIIL, ...SIIRSEL])),
-  },
-]
+/** Tek karışık havuz: somut + duygusal + fiil + şiirsel. */
+export const WORDS: string[] = Array.from(
+  new Set([...SOMUT, ...DUYGUSAL, ...FIIL, ...SIIRSEL]),
+)
 
 export function poolFor(id: DieId): string[] {
   switch (id) {
@@ -159,10 +144,6 @@ export function poolFor(id: DieId): string[] {
     case 'perspective':
       return PERSPECTIVES
     case 'word':
-      return WORD_CATEGORIES[0].words
+      return WORDS
   }
-}
-
-export function wordCategory(id: WordCategoryId): WordCategory {
-  return WORD_CATEGORIES.find((c) => c.id === id) ?? WORD_CATEGORIES[0]
 }

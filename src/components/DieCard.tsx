@@ -7,9 +7,10 @@ import {
 } from 'react'
 import type { DieMeta } from '../data/dice'
 import { poolFor } from '../data/dice'
-import { pick, pickDifferent } from '../lib/random'
+import { buzz, pick, pickDifferent, sample } from '../lib/random'
 import { useRoller } from '../hooks/useRoller'
 import type { DieHandle, DieResult } from '../types'
+import { DieFace, randomFace } from './DieFace'
 import styles from './Die.module.css'
 
 interface Props {
@@ -23,63 +24,86 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
   ref,
 ) {
   const pool = poolFor(meta.id)
+  const draw = meta.draw ?? 1
   const { phase, tick, isRolling, roll } = useRoller()
-  const [stream, setStream] = useState(() => pick(pool))
+  const [stream, setStream] = useState(() => drawLabel())
+  const [face, setFace] = useState(() => randomFace())
 
+  function drawLabel(): string {
+    return draw > 1 ? sample(pool, draw).join(' · ') : pick(pool)
+  }
+
+  // Sallanma sürerken hem değer hem zar yüzü akar.
   useEffect(() => {
-    if (phase === 'shaking') setStream(pick(pool))
-  }, [tick, phase, pool])
+    if (phase !== 'shaking') return
+    setStream(drawLabel())
+    setFace((f) => randomFace(f))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tick, phase])
 
   const doRoll = useCallback(() => {
+    if (isRolling) return
+    buzz(10)
     roll(() => {
-      onCommit({ dieId: meta.id, label: pickDifferent(pool, result?.label ?? null) })
+      buzz([0, 22, 40, 16])
+      setFace((f) => randomFace(f))
+      if (draw > 1) {
+        const words = sample(pool, draw)
+        onCommit({ dieId: meta.id, label: words.join(' · '), words })
+      } else {
+        onCommit({ dieId: meta.id, label: pickDifferent(pool, result?.label ?? null) })
+      }
     })
-  }, [roll, pool, result, onCommit, meta.id])
+  }, [isRolling, roll, pool, draw, result, onCommit, meta.id])
 
   useImperativeHandle(ref, () => ({ roll: doRoll }), [doRoll])
 
-  const showStream = phase === 'shaking'
-  const cardState = phase === 'idle' && !result ? 'empty' : phase
+  const state = isRolling ? phase : result ? 'done' : 'empty'
 
   return (
     <article
       className={`${styles.card} ${phase === 'shaking' ? 'is-shaking' : ''} ${
         phase === 'settling' ? 'is-settling' : ''
       }`}
-      data-state={cardState}
+      data-state={state}
+      role="button"
+      tabIndex={0}
+      aria-label={`${meta.title} zarını at`}
+      aria-busy={isRolling}
+      onClick={doRoll}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          doRoll()
+        }
+      }}
     >
+      {phase === 'settling' && <span className={styles.ripple} aria-hidden />}
+
       <div className={styles.head}>
-        <span className={styles.glyph} aria-hidden>
-          {meta.glyph}
+        <span
+          className={`${styles.face} ${phase === 'shaking' ? styles.tumbling : ''} ${
+            phase === 'settling' ? styles.landing : ''
+          }`}
+        >
+          <DieFace face={face} />
         </span>
-        <div className={styles.titles}>
-          <span className={styles.title}>{meta.title}</span>
-          <span className={styles.hint}>{meta.hint}</span>
-        </div>
-        <span className={styles.dot} aria-hidden />
+        <span className={styles.title}>{meta.title}</span>
+        <span className={styles.reroll} aria-hidden>
+          {result && !isRolling ? '↻' : ''}
+        </span>
       </div>
 
-      <div className={styles.viewport} aria-live="polite">
-        {showStream ? (
+      <div className={styles.body} aria-live="polite">
+        {phase === 'shaking' ? (
           <span className={styles.stream}>{stream}</span>
         ) : result ? (
           <span className={styles.value} key={result.label}>
             {result.label}
           </span>
         ) : (
-          <span className={styles.placeholder}>zar bekliyor…</span>
+          <span className={styles.hint}>{meta.hint}</span>
         )}
-      </div>
-
-      <div className={styles.footer}>
-        <button
-          type="button"
-          className={styles.rollBtn}
-          onClick={doRoll}
-          disabled={isRolling}
-        >
-          {isRolling ? 'atılıyor…' : result ? 'yeniden at' : 'zarı at'}
-        </button>
       </div>
     </article>
   )

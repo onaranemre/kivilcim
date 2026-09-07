@@ -27,3 +27,12 @@ export function sample<T>(arr: readonly T[], n: number): T[] {
 export function uid(): string {
   return Math.random().toString(36).slice(2, 9)
 }
+
+/** Destekleyen cihazlarda kısa dokunsal geri bildirim; yoksa sessizce geçer. */
+export function buzz(pattern: number | number[]): void {
+  try {
+    navigator.vibrate?.(pattern)
+  } catch {
+    /* yok say */
+  }
+}

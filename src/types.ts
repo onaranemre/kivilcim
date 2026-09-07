@@ -1,12 +1,11 @@
-import type { DieId, WordCategoryId } from './data/dice'
+import type { DieId } from './data/dice'
 
 export interface DieResult {
   dieId: DieId
   /** Ekranda ve özetlerde gösterilen metin. */
   label: string
-  /** Yalnızca kelime zarında dolu olur. */
+  /** Kelime zarında üç kelime ayrı ayrı da tutulur. */
   words?: string[]
-  wordCategory?: WordCategoryId
 }
 
 export type ResultMap = Record<DieId, DieResult | null>
