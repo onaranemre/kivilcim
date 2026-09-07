@@ -22,6 +22,13 @@
   grid-column: 1 / -1;
 }
 
+/* Tek sütun dışında son kutu diğerlerinden geniş olur; içeriğini ortala */
+@media (min-width: 401px) {
+  .summary > :last-child {
+    text-align: center;
+  }
+}
+
 @media (max-width: 720px) {
   .summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
