@@ -133,6 +133,19 @@
   }
 }
 
+/* Arka plandaki renk kürecikleri usulca gezinsin */
+@keyframes orb-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -2.5%, 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(-2.5%, 3%, 0) scale(0.97);
+  }
+}
+
 @keyframes dot-pop {
   0% {
     transform: scale(0.4);
