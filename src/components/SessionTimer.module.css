@@ -71,9 +71,9 @@
 .chipTitle {
   font-family: var(--font-mono);
   font-size: 9.5px;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.22em;
   text-transform: lowercase;
-  color: var(--text-faint);
+  color: var(--text);
 }
 
 .chipValue {

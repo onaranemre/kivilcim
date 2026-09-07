@@ -122,9 +122,10 @@
 .title {
   font-family: var(--font-mono);
   font-size: 10.5px;
-  letter-spacing: 0.26em;
+  letter-spacing: 0.24em;
   text-transform: lowercase;
-  color: var(--text-faint);
+  /* Alt satirdaki sonuc yazisiyla ayni renk ki etiket de rahat okunsun. */
+  color: var(--text);
 }
 
 .reroll {

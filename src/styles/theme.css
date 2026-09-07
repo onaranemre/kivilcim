@@ -20,7 +20,8 @@
 
   --text: #2c2620;
   --text-dim: #6a6052;
-  --text-faint: #6f6657;
+  /* Ikincil metin de rahat okunsun: --dim ile ayni seviyede tutuluyor. */
+  --text-faint: #6a6052;
 
   --spark: #c8622f;
   --spark-soft: #b1531f;
@@ -86,7 +87,7 @@
 
     --text: #ede5d5;
     --text-dim: #a89e8c;
-    --text-faint: #8b8270;
+    --text-faint: #a89e8c;
 
     --spark: #f0925f;
     --spark-soft: #e07f4c;
@@ -141,7 +142,7 @@
 
   --text: #ede5d5;
   --text-dim: #a89e8c;
-  --text-faint: #8b8270;
+  --text-faint: #a89e8c;
 
   --spark: #f0925f;
   --spark-soft: #e07f4c;
@@ -290,6 +291,32 @@ h3 {
   letter-spacing: 0.32em;
   text-transform: lowercase;
   color: var(--text-faint);
+}
+
+/*
+ * Cam kenar: 1px'lik bir çerçeveyi gradyanla boyayıp maskeliyoruz, böylece
+ * üst-sol köşede ışık toplanmış, altta sönmüş bir kırılma kenarı çıkıyor.
+ */
+.glass-rim::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-rim-hi),
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
 }
 
 .btn {
