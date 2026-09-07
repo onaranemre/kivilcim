@@ -18,10 +18,11 @@
   --line: rgba(55, 42, 24, 0.14);
   --line-strong: rgba(55, 42, 24, 0.26);
 
+  /* Tum arayuz metni tek renkte; hiyerarsi boyut, agirlik ve harf araligindan
+     gelir. --dim / --faint geriye donuk uyumluluk icin --text'e baglandi. */
   --text: #2c2620;
-  --text-dim: #6a6052;
-  /* Ikincil metin de rahat okunsun: --dim ile ayni seviyede tutuluyor. */
-  --text-faint: #6a6052;
+  --text-dim: var(--text);
+  --text-faint: var(--text);
 
   --spark: #c8622f;
   --spark-soft: #b1531f;
@@ -86,8 +87,8 @@
     --line-strong: rgba(255, 248, 235, 0.2);
 
     --text: #ede5d5;
-    --text-dim: #a89e8c;
-    --text-faint: #a89e8c;
+    --text-dim: var(--text);
+    --text-faint: var(--text);
 
     --spark: #f0925f;
     --spark-soft: #e07f4c;
@@ -141,8 +142,8 @@
   --line-strong: rgba(255, 248, 235, 0.2);
 
   --text: #ede5d5;
-  --text-dim: #a89e8c;
-  --text-faint: #a89e8c;
+  --text-dim: var(--text);
+  --text-faint: var(--text);
 
   --spark: #f0925f;
   --spark-soft: #e07f4c;
