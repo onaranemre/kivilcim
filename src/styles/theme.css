@@ -34,21 +34,21 @@
   --on-accent: #fbf7ec;
 
   /* --- Cam malzeme ------------------------------------------------ */
-  --glass-bg: rgba(255, 252, 246, 0.34);
+  --glass-bg: rgba(255, 252, 246, 0.15);
   --glass-gloss: linear-gradient(
     177deg,
-    rgba(255, 255, 255, 0.62),
-    rgba(255, 255, 255, 0.06) 42%,
-    rgba(255, 255, 255, 0.22)
+    rgba(255, 255, 255, 0.32),
+    rgba(255, 255, 255, 0.02) 42%,
+    rgba(255, 255, 255, 0.1)
   );
-  --glass-sheen: rgba(255, 255, 255, 0.85);
-  --glass-sheen-b: rgba(255, 255, 255, 0.35);
-  --glass-inner: rgba(255, 255, 255, 0.4);
+  --glass-sheen: rgba(255, 255, 255, 0.72);
+  --glass-sheen-b: rgba(255, 255, 255, 0.26);
+  --glass-inner: rgba(255, 255, 255, 0.24);
   /* Kırılan kenar: üst-solda parlak, altta sönük */
   --glass-rim-hi: rgba(255, 255, 255, 0.95);
   --glass-rim-lo: rgba(120, 98, 66, 0.16);
-  --glass-shadow: 0 18px 40px -26px rgba(92, 74, 48, 0.5);
-  --glass-blur: blur(26px) saturate(185%);
+  --glass-shadow: 0 18px 40px -28px rgba(92, 74, 48, 0.42);
+  --glass-blur: blur(32px) saturate(195%);
 
   /* Camın kıracağı arka plan kürecikleri */
   --orb-1: rgba(200, 98, 47, 0.2);
@@ -99,20 +99,20 @@
     --spark-tint: rgba(240, 146, 95, 0.13);
     --on-accent: #201c17;
 
-    --glass-bg: rgba(255, 248, 236, 0.06);
+    --glass-bg: rgba(255, 248, 236, 0.025);
     --glass-gloss: linear-gradient(
       177deg,
-      rgba(255, 250, 240, 0.13),
-      rgba(255, 250, 240, 0.01) 42%,
-      rgba(255, 250, 240, 0.05)
+      rgba(255, 250, 240, 0.07),
+      rgba(255, 250, 240, 0.004) 42%,
+      rgba(255, 250, 240, 0.022)
     );
-    --glass-sheen: rgba(255, 250, 240, 0.22);
-    --glass-sheen-b: rgba(255, 250, 240, 0.06);
-    --glass-inner: rgba(255, 250, 240, 0.1);
+    --glass-sheen: rgba(255, 250, 240, 0.19);
+    --glass-sheen-b: rgba(255, 250, 240, 0.045);
+    --glass-inner: rgba(255, 250, 240, 0.06);
     --glass-rim-hi: rgba(255, 250, 240, 0.34);
     --glass-rim-lo: rgba(255, 248, 235, 0.05);
-    --glass-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.8);
-    --glass-blur: blur(28px) saturate(165%);
+    --glass-shadow: 0 22px 44px -30px rgba(0, 0, 0, 0.72);
+    --glass-blur: blur(34px) saturate(175%);
 
     --orb-1: rgba(240, 146, 95, 0.2);
     --orb-2: rgba(131, 186, 176, 0.15);
@@ -154,20 +154,20 @@
   --spark-tint: rgba(240, 146, 95, 0.13);
   --on-accent: #201c17;
 
-  --glass-bg: rgba(255, 248, 236, 0.06);
+  --glass-bg: rgba(255, 248, 236, 0.025);
   --glass-gloss: linear-gradient(
     177deg,
-    rgba(255, 250, 240, 0.13),
-    rgba(255, 250, 240, 0.01) 42%,
-    rgba(255, 250, 240, 0.05)
+    rgba(255, 250, 240, 0.07),
+    rgba(255, 250, 240, 0.004) 42%,
+    rgba(255, 250, 240, 0.022)
   );
-  --glass-sheen: rgba(255, 250, 240, 0.22);
-  --glass-sheen-b: rgba(255, 250, 240, 0.06);
-  --glass-inner: rgba(255, 250, 240, 0.1);
+  --glass-sheen: rgba(255, 250, 240, 0.19);
+  --glass-sheen-b: rgba(255, 250, 240, 0.045);
+  --glass-inner: rgba(255, 250, 240, 0.06);
   --glass-rim-hi: rgba(255, 250, 240, 0.34);
   --glass-rim-lo: rgba(255, 248, 235, 0.05);
-  --glass-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.8);
-  --glass-blur: blur(28px) saturate(165%);
+  --glass-shadow: 0 22px 44px -30px rgba(0, 0, 0, 0.72);
+  --glass-blur: blur(34px) saturate(175%);
 
   --orb-1: rgba(240, 146, 95, 0.2);
   --orb-2: rgba(131, 186, 176, 0.15);
