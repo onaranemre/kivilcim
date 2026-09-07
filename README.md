@@ -7,10 +7,11 @@ Müzisyen bir süre (15–60 dk) seçer, beş yaratıcı zarı tek tek atar
 
 ## Özellikler
 
-- Her zar için ayrı **Zarı At / Yeniden At** butonu ve fiziksel zar hissi veren
-  sallanma + değer akışı animasyonu
+- **Kartın kendisi zardır** — üstüne dokun ve at; savrulma, zar yüzünün dönüşü,
+  çarpma anındaki squash-and-stretch ve yayılan halka ile fiziksel bir atış hissi
+  (destekleyen cihazlarda dokunsal titreşim)
 - **Hepsini At** — tüm zarları kademeli tetikler
-- Kelime zarı 5 kategori sunar: Somut, Duygusal, Fiil, Şiirsel, Karışık
+- Kelime zarı tek karışık havuzdan üç kelime verir (somut + duygusal + fiil + şiirsel)
 - Beş zar da atılınca aktifleşen çalışma sayacı (başlat/duraklat/sıfırla)
 - **Küçült** — sayaç, sekmeden çıkınca ekranda kalan bir Picture-in-Picture
   penceresine taşınır (Chrome/Edge; desteklenmeyen tarayıcıda buton gizlenir)
