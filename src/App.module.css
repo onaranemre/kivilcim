@@ -9,17 +9,31 @@
 
 .mark {
   display: inline-flex;
-  gap: 7px;
-  font-size: 13px;
+  align-items: center;
+  gap: 8px;
   color: var(--text-faint);
-  letter-spacing: 0.3em;
 }
 
-.mark span:nth-child(2) {
-  color: var(--spark);
+.mark svg {
+  display: block;
+  width: 15px;
+  height: 15px;
 }
-.mark span:nth-child(4) {
-  color: var(--calm);
+
+.mark svg rect {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.mark svg circle {
+  fill: currentColor;
+}
+
+.mark svg:nth-child(2) {
+  width: 19px;
+  height: 19px;
+  color: var(--spark);
 }
 
 .title {

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import type { DieId, WordCategoryId } from './data/dice'
+import type { DieId } from './data/dice'
 import type { DieResult, ResultMap, Screen } from './types'
 import { DurationPicker } from './components/DurationPicker'
 import { DiceBoard } from './components/DiceBoard'
 import { SessionTimer } from './components/SessionTimer'
 import { ThemeToggle } from './components/ThemeToggle'
+import { DieFace } from './components/DieFace'
 import { useTheme } from './hooks/useTheme'
 import { useCountdown } from './hooks/useCountdown'
 import styles from './App.module.css'
@@ -21,7 +22,6 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('setup')
   const [minutes, setMinutes] = useState(30)
   const [results, setResults] = useState<ResultMap>(EMPTY_RESULTS)
-  const [wordCat, setWordCat] = useState<WordCategoryId>('karisik')
 
   const { effective, toggle } = useTheme()
   const timer = useCountdown()
@@ -55,10 +55,9 @@ export default function App() {
 
       <header className={styles.header}>
         <div className={styles.mark} aria-hidden>
-          <span>◈</span>
-          <span>✶</span>
-          <span>⌘</span>
-          <span>❍</span>
+          <DieFace face={2} />
+          <DieFace face={5} />
+          <DieFace face={3} />
         </div>
         <h1 className={styles.title}>kıvılcım</h1>
       </header>
@@ -104,13 +103,7 @@ export default function App() {
               </button>
             )}
           </div>
-          <DiceBoard
-            results={results}
-            wordCat={wordCat}
-            onWordCat={setWordCat}
-            onCommit={commit}
-            onStart={startSession}
-          />
+          <DiceBoard results={results} onCommit={commit} onStart={startSession} />
         </section>
       )}
 
@@ -131,9 +124,6 @@ export default function App() {
             >
               süreyi değiştir
             </button>
-          </div>
-          <div className={styles.stageIntro}>
-            <h2>şimdi yaz</h2>
           </div>
           <SessionTimer timer={timer} results={results} onRestart={restart} />
         </section>
