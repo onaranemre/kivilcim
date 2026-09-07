@@ -17,7 +17,6 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
   const { remaining, total, running, done } = timer
   const progress = total > 0 ? 1 - remaining / total : 0
   const offset = CIRC * (1 - Math.min(1, Math.max(0, progress)))
-  const stateLabel = done ? 'süre doldu' : running ? 'akıyor' : 'duraklatıldı'
 
   return (
     <div className={styles.wrap}>
@@ -26,8 +25,7 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
           const r = results[d.id]
           return (
             <div key={d.id} className={styles.chip}>
-              <div className={styles.chipTitle}>{d.title}</div>
-              <div className={styles.chipValue}>{r ? r.label : '—'}</div>
+              {r ? r.label : '—'}
             </div>
           )
         })}
@@ -53,10 +51,7 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
             strokeDashoffset={offset}
           />
         </svg>
-        <div>
-          <div className={styles.time}>{fmtClock(remaining)}</div>
-          <div className={styles.state}>{stateLabel}</div>
-        </div>
+        <div className={styles.time}>{fmtClock(remaining)}</div>
       </div>
 
       <div className={styles.controls}>

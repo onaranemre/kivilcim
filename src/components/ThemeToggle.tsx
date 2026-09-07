@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom'
 import type { EffectiveTheme } from '../hooks/useTheme'
 import styles from './ThemeToggle.module.css'
 
@@ -8,7 +9,9 @@ interface Props {
 
 export function ThemeToggle({ theme, onToggle }: Props) {
   const isDark = theme === 'dark'
-  return (
+
+  // <body>'ye portal: hiçbir ata transform'u sabit konumu bozamaz.
+  return createPortal(
     <button
       type="button"
       className={styles.btn}
@@ -26,6 +29,7 @@ export function ThemeToggle({ theme, onToggle }: Props) {
           <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
         </svg>
       )}
-    </button>
+    </button>,
+    document.body,
   )
 }

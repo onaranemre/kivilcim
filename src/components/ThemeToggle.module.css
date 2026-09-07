@@ -2,7 +2,7 @@
   position: fixed;
   top: clamp(14px, 3vw, 24px);
   right: clamp(14px, 3vw, 24px);
-  z-index: 50;
+  z-index: 200;
   width: 40px;
   height: 40px;
   display: grid;
