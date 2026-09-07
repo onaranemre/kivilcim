@@ -132,7 +132,7 @@
   font-size: 15px;
   line-height: 1;
   color: var(--text-faint);
-  opacity: 0.3;
+  opacity: 0.5;
   transition: opacity 0.2s ease, color 0.2s ease;
 }
 
