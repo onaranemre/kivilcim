@@ -16,13 +16,11 @@ import styles from './Die.module.css'
 interface Props {
   meta: DieMeta
   result: DieResult | null
-  /** Tek başına satırı kaplayan kartlarda içeriği ortalar. */
-  centered?: boolean
   onCommit: (r: DieResult) => void
 }
 
 export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
-  { meta, result, centered = false, onCommit },
+  { meta, result, onCommit },
   ref,
 ) {
   const pool = poolFor(meta.id)
@@ -64,9 +62,9 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
 
   return (
     <article
-      className={`${styles.card} ${centered ? styles.centered : ''} ${
-        phase === 'shaking' ? 'is-shaking' : ''
-      } ${phase === 'settling' ? 'is-settling' : ''}`}
+      className={`${styles.card} ${phase === 'shaking' ? 'is-shaking' : ''} ${
+        phase === 'settling' ? 'is-settling' : ''
+      }`}
       data-state={state}
       role="button"
       tabIndex={0}

@@ -35,7 +35,7 @@ export function DiceBoard({ results, onCommit, onStart }: Props) {
       </div>
 
       <div className={styles.grid}>
-        {DICE.map((meta, i) => (
+        {DICE.map((meta) => (
           <DieCard
             key={meta.id}
             ref={(h) => {
@@ -43,8 +43,6 @@ export function DiceBoard({ results, onCommit, onStart }: Props) {
             }}
             meta={meta}
             result={results[meta.id]}
-            /* Son kart tek başına satırı kaplıyor; içeriği ortalansın. */
-            centered={i === DICE.length - 1}
             onCommit={(r) => onCommit(meta.id, r)}
           />
         ))}

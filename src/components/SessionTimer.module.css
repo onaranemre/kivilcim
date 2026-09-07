@@ -22,13 +22,6 @@
   grid-column: 1 / -1;
 }
 
-/* Tek sütun dışında son kutu diğerlerinden geniş olur; içeriğini ortala */
-@media (min-width: 401px) {
-  .summary > :last-child {
-    text-align: center;
-  }
-}
-
 @media (max-width: 720px) {
   .summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -45,6 +38,7 @@
   position: relative;
   padding: 13px 15px;
   border-radius: var(--radius-sm);
+  text-align: center;
   background: var(--glass-gloss), var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);

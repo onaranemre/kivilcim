@@ -80,9 +80,11 @@
   animation: ripple-out 0.52s var(--ease-out) 1 forwards;
 }
 
+/* Tüm kart içeriği ortalı; ↻ ikonu sağ üst köşede duruyor */
 .head {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
 }
 
@@ -129,7 +131,9 @@
 }
 
 .reroll {
-  margin-left: auto;
+  position: absolute;
+  top: 22px;
+  right: 22px;
   font-size: 15px;
   line-height: 1;
   color: var(--text-faint);
@@ -146,29 +150,9 @@
   flex: 1;
   display: flex;
   align-items: center;
+  justify-content: center;
   min-height: 64px;
-}
-
-/*
- * Tek başına satırı kaplayan kart (kelime): içerik ortada, ↻ köşede.
- * Sadece grid çok sütunluyken; tek sütunda tüm kartlar zaten aynı genişlikte.
- */
-@media (min-width: 641px) {
-  .centered .head {
-    justify-content: center;
-  }
-
-  .centered .reroll {
-    position: absolute;
-    top: 20px;
-    right: 22px;
-    margin-left: 0;
-  }
-
-  .centered .body {
-    justify-content: center;
-    text-align: center;
-  }
+  text-align: center;
 }
 
 .hint {
