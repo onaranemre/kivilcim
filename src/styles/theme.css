@@ -2,6 +2,10 @@
  *  Kıvılcım — tema tokenları
  *  Varsayılan: krem / açık.  Koyu: sıcak antrasit.
  *  Sıra: :root (açık) → sistem-koyu → [data-theme] override.
+ *
+ *  DİKKAT: aşağıdaki iki koyu blok birebir aynı olmalı. Biri sistem
+ *  tercihini, diğeri düğmeyle yapılan seçimi karşılıyor; birine token
+ *  eklerken diğerine de ekle.
  * ------------------------------------------------------------------ */
 
 :root {
@@ -29,6 +33,18 @@
   --spark-tint: rgba(200, 98, 47, 0.1);
   --on-accent: #fbf7ec;
 
+  /* Cam yüzey: yarı saydam süt beyazı, üstte ince ışık, çok yumuşak kenar */
+  --glass-bg: rgba(255, 252, 245, 0.46);
+  --glass-gloss: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0) 62%
+  );
+  --glass-sheen: rgba(255, 255, 255, 0.72);
+  --glass-rim: rgba(92, 74, 48, 0.085);
+  --glass-shadow: 0 14px 32px -22px rgba(92, 74, 48, 0.45);
+  --glass-blur: blur(18px) saturate(150%);
+
   --grain-opacity: 0.05;
   --grain-blend: multiply;
 
@@ -36,8 +52,8 @@
   --halo-2: rgba(95, 138, 128, 0.08);
   --halo-3: rgba(224, 178, 92, 0.14);
 
-  --radius: 18px;
-  --radius-sm: 11px;
+  --radius: 20px;
+  --radius-sm: 12px;
 
   --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
   --font-mono: 'Space Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
@@ -72,6 +88,17 @@
     --inset: rgba(0, 0, 0, 0.24);
     --spark-tint: rgba(240, 146, 95, 0.13);
     --on-accent: #201c17;
+
+    --glass-bg: rgba(255, 248, 236, 0.05);
+    --glass-gloss: linear-gradient(
+      180deg,
+      rgba(255, 250, 240, 0.06),
+      rgba(255, 250, 240, 0) 62%
+    );
+    --glass-sheen: rgba(255, 250, 240, 0.11);
+    --glass-rim: rgba(255, 248, 235, 0.075);
+    --glass-shadow: 0 18px 38px -24px rgba(0, 0, 0, 0.75);
+    --glass-blur: blur(20px) saturate(135%);
 
     --grain-opacity: 0.055;
     --grain-blend: overlay;
@@ -108,6 +135,17 @@
   --inset: rgba(0, 0, 0, 0.24);
   --spark-tint: rgba(240, 146, 95, 0.13);
   --on-accent: #201c17;
+
+  --glass-bg: rgba(255, 248, 236, 0.05);
+  --glass-gloss: linear-gradient(
+    180deg,
+    rgba(255, 250, 240, 0.06),
+    rgba(255, 250, 240, 0) 62%
+  );
+  --glass-sheen: rgba(255, 250, 240, 0.11);
+  --glass-rim: rgba(255, 248, 235, 0.075);
+  --glass-shadow: 0 18px 38px -24px rgba(0, 0, 0, 0.75);
+  --glass-blur: blur(20px) saturate(135%);
 
   --grain-opacity: 0.055;
   --grain-blend: overlay;
@@ -217,8 +255,11 @@ h3 {
   gap: 10px;
   padding: 13px 22px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--line-strong);
-  background: var(--surface-strong);
+  border: 1px solid var(--glass-rim);
+  background: var(--glass-gloss), var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: inset 0 1px 0 var(--glass-sheen), var(--glass-shadow);
   color: var(--text);
   font-size: 13px;
   letter-spacing: 0.08em;
@@ -226,15 +267,16 @@ h3 {
   transition:
     transform 0.18s var(--ease-out),
     border-color 0.18s ease,
-    background 0.18s ease,
     box-shadow 0.25s ease,
     opacity 0.2s ease;
 }
 
 .btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: var(--spark);
-  box-shadow: 0 0 0 1px var(--glow-spark), 0 12px 40px -18px var(--glow-spark);
+  border-color: var(--glow-spark);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    0 16px 34px -22px var(--glow-spark);
 }
 
 .btn:active:not(:disabled) {
@@ -247,21 +289,24 @@ h3 {
 
 .btn--primary {
   background: linear-gradient(180deg, var(--spark), var(--spark-soft));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-color: transparent;
   color: var(--paper);
   font-weight: 700;
-  box-shadow: 0 14px 44px -16px var(--glow-spark);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 16px 40px -18px var(--glow-spark);
 }
 
 .btn--primary:hover:not(:disabled) {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.28), 0 18px 60px -14px var(--glow-spark);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    0 20px 54px -16px var(--glow-spark);
 }
 
 .btn--ghost {
-  background: transparent;
-  border-color: var(--line);
   color: var(--text-dim);
-  text-transform: lowercase;
   letter-spacing: 0.03em;
   font-size: 12px;
   padding: 9px 15px;
@@ -269,6 +314,4 @@ h3 {
 
 .btn--ghost:hover:not(:disabled) {
   color: var(--text);
-  border-color: var(--line-strong);
-  box-shadow: none;
 }

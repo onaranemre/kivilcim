@@ -107,7 +107,11 @@
   letter-spacing: 0.1em;
   padding: 9px 15px;
   border-radius: 999px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--glass-rim);
+  background: var(--glass-gloss), var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: inset 0 1px 0 var(--glass-sheen);
   color: var(--text-dim);
   transition:
     color 0.16s ease,
@@ -118,13 +122,16 @@
 
 .preset:hover {
   transform: translateY(-1px);
-  border-color: var(--line-strong);
   color: var(--text);
+  border-color: var(--glow-spark);
 }
 
 .preset[data-active='true'] {
   color: var(--on-accent);
-  background: var(--spark);
+  background: linear-gradient(180deg, var(--spark), var(--spark-soft));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-color: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.26);
   font-weight: 700;
 }
