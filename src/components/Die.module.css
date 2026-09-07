@@ -6,11 +6,15 @@
   min-height: 172px;
   padding: 20px 22px 24px;
   border-radius: var(--radius);
-  border: 1px solid var(--glass-rim);
+  border: none;
   background: var(--glass-gloss), var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: inset 0 1px 0 var(--glass-sheen), var(--glass-shadow);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    inset 0 22px 40px -34px var(--glass-inner),
+    var(--glass-shadow);
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
@@ -18,16 +22,38 @@
   will-change: transform;
   transition:
     transform 0.22s var(--ease-out),
-    border-color 0.25s ease,
     box-shadow 0.3s ease;
+}
+
+/* Kırılan cam kenarı */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-rim-hi),
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  border-color: var(--glow-spark);
   box-shadow:
     inset 0 1px 0 var(--glass-sheen),
-    0 24px 48px -28px var(--glow-spark);
+    inset 0 -1px 0 var(--glass-sheen-b),
+    inset 0 22px 40px -34px var(--glass-inner),
+    0 26px 52px -28px var(--glow-spark);
 }
 
 .card:active {
@@ -36,9 +62,9 @@
 
 /* Atış anında kart öne çıkar */
 .card[data-state='shaking'] {
-  border-color: var(--spark);
   box-shadow:
     inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
     0 0 0 1px var(--glow-spark),
     0 34px 76px -38px var(--glow-spark);
   z-index: 2;

@@ -5,7 +5,6 @@ const MIN = 15
 const MID = 30
 const MAX = 60
 const STEP = 5
-const PRESETS = [15, 30, 45, 60]
 
 /**
  * Slider konumu (0–100) ile dakika arasında iki parçalı eşleme:
@@ -60,20 +59,6 @@ export function DurationPicker({ initial = 30, confirmLabel = 'zarları getir �
           <span>30dk</span>
           <span>60dk</span>
         </div>
-      </div>
-
-      <div className={styles.presets}>
-        {PRESETS.map((p) => (
-          <button
-            key={p}
-            type="button"
-            className={styles.preset}
-            data-active={p === minutes}
-            onClick={() => setPos(minutesToPos(p))}
-          >
-            {p} dk
-          </button>
-        ))}
       </div>
 
       <button type="button" className="btn btn--primary" onClick={() => onConfirm(minutes)}>

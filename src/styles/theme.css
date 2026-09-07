@@ -33,17 +33,27 @@
   --spark-tint: rgba(200, 98, 47, 0.1);
   --on-accent: #fbf7ec;
 
-  /* Cam yüzey: yarı saydam süt beyazı, üstte ince ışık, çok yumuşak kenar */
-  --glass-bg: rgba(255, 252, 245, 0.46);
+  /* --- Cam malzeme ------------------------------------------------ */
+  --glass-bg: rgba(255, 252, 246, 0.34);
   --glass-gloss: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.5),
-    rgba(255, 255, 255, 0) 62%
+    177deg,
+    rgba(255, 255, 255, 0.62),
+    rgba(255, 255, 255, 0.06) 42%,
+    rgba(255, 255, 255, 0.22)
   );
-  --glass-sheen: rgba(255, 255, 255, 0.72);
-  --glass-rim: rgba(92, 74, 48, 0.085);
-  --glass-shadow: 0 14px 32px -22px rgba(92, 74, 48, 0.45);
-  --glass-blur: blur(18px) saturate(150%);
+  --glass-sheen: rgba(255, 255, 255, 0.85);
+  --glass-sheen-b: rgba(255, 255, 255, 0.35);
+  --glass-inner: rgba(255, 255, 255, 0.4);
+  /* Kırılan kenar: üst-solda parlak, altta sönük */
+  --glass-rim-hi: rgba(255, 255, 255, 0.95);
+  --glass-rim-lo: rgba(120, 98, 66, 0.16);
+  --glass-shadow: 0 18px 40px -26px rgba(92, 74, 48, 0.5);
+  --glass-blur: blur(26px) saturate(185%);
+
+  /* Camın kıracağı arka plan kürecikleri */
+  --orb-1: rgba(200, 98, 47, 0.2);
+  --orb-2: rgba(95, 138, 128, 0.17);
+  --orb-3: rgba(224, 178, 92, 0.26);
 
   --grain-opacity: 0.05;
   --grain-blend: multiply;
@@ -89,16 +99,24 @@
     --spark-tint: rgba(240, 146, 95, 0.13);
     --on-accent: #201c17;
 
-    --glass-bg: rgba(255, 248, 236, 0.05);
+    --glass-bg: rgba(255, 248, 236, 0.06);
     --glass-gloss: linear-gradient(
-      180deg,
-      rgba(255, 250, 240, 0.06),
-      rgba(255, 250, 240, 0) 62%
+      177deg,
+      rgba(255, 250, 240, 0.13),
+      rgba(255, 250, 240, 0.01) 42%,
+      rgba(255, 250, 240, 0.05)
     );
-    --glass-sheen: rgba(255, 250, 240, 0.11);
-    --glass-rim: rgba(255, 248, 235, 0.075);
-    --glass-shadow: 0 18px 38px -24px rgba(0, 0, 0, 0.75);
-    --glass-blur: blur(20px) saturate(135%);
+    --glass-sheen: rgba(255, 250, 240, 0.22);
+    --glass-sheen-b: rgba(255, 250, 240, 0.06);
+    --glass-inner: rgba(255, 250, 240, 0.1);
+    --glass-rim-hi: rgba(255, 250, 240, 0.34);
+    --glass-rim-lo: rgba(255, 248, 235, 0.05);
+    --glass-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.8);
+    --glass-blur: blur(28px) saturate(165%);
+
+    --orb-1: rgba(240, 146, 95, 0.2);
+    --orb-2: rgba(131, 186, 176, 0.15);
+    --orb-3: rgba(150, 110, 220, 0.12);
 
     --grain-opacity: 0.055;
     --grain-blend: overlay;
@@ -136,16 +154,24 @@
   --spark-tint: rgba(240, 146, 95, 0.13);
   --on-accent: #201c17;
 
-  --glass-bg: rgba(255, 248, 236, 0.05);
+  --glass-bg: rgba(255, 248, 236, 0.06);
   --glass-gloss: linear-gradient(
-    180deg,
-    rgba(255, 250, 240, 0.06),
-    rgba(255, 250, 240, 0) 62%
+    177deg,
+    rgba(255, 250, 240, 0.13),
+    rgba(255, 250, 240, 0.01) 42%,
+    rgba(255, 250, 240, 0.05)
   );
-  --glass-sheen: rgba(255, 250, 240, 0.11);
-  --glass-rim: rgba(255, 248, 235, 0.075);
-  --glass-shadow: 0 18px 38px -24px rgba(0, 0, 0, 0.75);
-  --glass-blur: blur(20px) saturate(135%);
+  --glass-sheen: rgba(255, 250, 240, 0.22);
+  --glass-sheen-b: rgba(255, 250, 240, 0.06);
+  --glass-inner: rgba(255, 250, 240, 0.1);
+  --glass-rim-hi: rgba(255, 250, 240, 0.34);
+  --glass-rim-lo: rgba(255, 248, 235, 0.05);
+  --glass-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.8);
+  --glass-blur: blur(28px) saturate(165%);
+
+  --orb-1: rgba(240, 146, 95, 0.2);
+  --orb-2: rgba(131, 186, 176, 0.15);
+  --orb-3: rgba(150, 110, 220, 0.12);
 
   --grain-opacity: 0.055;
   --grain-blend: overlay;
@@ -182,6 +208,24 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
   /* Tüm arayüz metni küçük harf (Türkçe: lang="tr" ile İ→i, I→ı). */
   text-transform: lowercase;
+}
+
+/*
+ * Yavaşça süzülen renk kürecikleri. Cam panellerin altında kalır;
+ * backdrop-filter bunları bulanıklaştırıp doyurunca cam gerçekten "cam" olur.
+ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -25%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(closest-side, var(--orb-1), transparent) 18% 22% / 52vmax 52vmax no-repeat,
+    radial-gradient(closest-side, var(--orb-2), transparent) 84% 14% / 42vmax 42vmax no-repeat,
+    radial-gradient(closest-side, var(--orb-3), transparent) 62% 82% / 58vmax 58vmax no-repeat;
+  filter: blur(24px);
+  animation: orb-drift 32s ease-in-out infinite alternate;
 }
 
 /* İnce film grain dokusu */
@@ -249,34 +293,58 @@ h3 {
 }
 
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
   padding: 13px 22px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-rim);
+  border: none;
   background: var(--glass-gloss), var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: inset 0 1px 0 var(--glass-sheen), var(--glass-shadow);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    var(--glass-shadow);
   color: var(--text);
   font-size: 13px;
   letter-spacing: 0.08em;
   text-transform: lowercase;
   transition:
     transform 0.18s var(--ease-out),
-    border-color 0.18s ease,
     box-shadow 0.25s ease,
     opacity 0.2s ease;
 }
 
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-rim-hi),
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
 .btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  border-color: var(--glow-spark);
   box-shadow:
     inset 0 1px 0 var(--glass-sheen),
-    0 16px 34px -22px var(--glow-spark);
+    inset 0 -1px 0 var(--glass-sheen-b),
+    0 18px 36px -22px var(--glow-spark);
 }
 
 .btn:active:not(:disabled) {
@@ -291,17 +359,20 @@ h3 {
   background: linear-gradient(180deg, var(--spark), var(--spark-soft));
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
-  border-color: transparent;
   color: var(--paper);
   font-weight: 700;
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
     0 16px 40px -18px var(--glow-spark);
+}
+
+.btn--primary::before {
+  display: none;
 }
 
 .btn--primary:hover:not(:disabled) {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.36),
     0 20px 54px -16px var(--glow-spark);
 }
 

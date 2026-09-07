@@ -8,24 +8,48 @@
   display: grid;
   place-items: center;
   border-radius: 50%;
-  border: 1px solid var(--glass-rim);
+  border: none;
   background: var(--glass-gloss), var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  box-shadow: inset 0 1px 0 var(--glass-sheen), var(--glass-shadow);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    var(--glass-shadow);
   color: var(--text-dim);
   transition:
     transform 0.2s var(--ease-out),
     color 0.2s ease,
-    border-color 0.2s ease,
     box-shadow 0.25s ease;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-rim-hi),
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 .btn:hover {
   color: var(--spark);
-  border-color: var(--spark);
   transform: rotate(-18deg);
-  box-shadow: 0 0 0 1px var(--glow-spark), 0 10px 30px -14px var(--glow-spark);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    0 12px 32px -14px var(--glow-spark);
 }
 
 .btn svg {
