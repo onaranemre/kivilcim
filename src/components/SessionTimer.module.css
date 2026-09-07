@@ -5,16 +5,33 @@
   gap: 30px;
 }
 
+/*
+ * Dört zar üstte eşit sütunlarda, kelime altta tam genişlikte.
+ * auto-fit kullanılmıyor: alttaki tam genişlik satırı fazladan bir sütunu
+ * ayakta tutup üst satırda boşluk bırakıyordu.
+ */
 .summary {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 
 /* Kelime özeti tek satıra sığsın */
 .summary > :last-child {
   grid-column: 1 / -1;
+}
+
+@media (max-width: 720px) {
+  .summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 400px) {
+  .summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .chip {
