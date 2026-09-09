@@ -59,6 +59,13 @@
   margin-bottom: 18px;
 }
 
+/* Kurulum ekranındaki "geçmiş" girişi — süre seçicinin üstünde ortalı */
+.setupNav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
 .stageIntro {
   display: flex;
   flex-wrap: wrap;

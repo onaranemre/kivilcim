@@ -1,0 +1,109 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.round {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 18px 20px 20px;
+  border-radius: var(--radius);
+  background: var(--glass-gloss), var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    var(--glass-shadow);
+}
+
+.round::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-rim-hi),
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+  color: var(--text-faint);
+}
+
+.dot {
+  opacity: 0.5;
+}
+
+.del {
+  margin-left: auto;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 17px;
+  line-height: 1;
+  color: var(--text-faint);
+  transition: color 0.18s ease, background 0.18s ease;
+}
+
+.del:hover {
+  color: var(--spark);
+  background: var(--spark-tint);
+}
+
+.values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.value {
+  font-family: var(--font-display);
+  font-size: 14px;
+  line-height: 1.3;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+.replay {
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+.empty {
+  text-align: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(15px, 3vw, 18px);
+  line-height: 1.5;
+  color: var(--text-faint);
+  padding: clamp(40px, 14vw, 90px) 0;
+}

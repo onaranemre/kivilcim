@@ -404,13 +404,29 @@ h3 {
     0 20px 54px -16px var(--glow-spark);
 }
 
+/*
+ * Ghost = "krom": saydam, ince kenarlı, mat metin. Cam dolgulu cevap
+ * kutularıyla karışmasın diye camsı malzemesi tamamen kaldırıldı.
+ */
 .btn--ghost {
-  color: var(--text-dim);
-  letter-spacing: 0.03em;
+  background: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--line);
+  box-shadow: none;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
   font-size: 12px;
   padding: 9px 15px;
 }
 
+.btn--ghost::before {
+  display: none;
+}
+
 .btn--ghost:hover:not(:disabled) {
+  transform: translateY(-1px);
+  border-color: var(--line-strong);
+  box-shadow: none;
   color: var(--text);
 }

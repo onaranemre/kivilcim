@@ -14,4 +14,4 @@ export interface DieHandle {
   roll: () => void
 }
 
-export type Screen = 'setup' | 'rolling' | 'session'
+export type Screen = 'setup' | 'rolling' | 'session' | 'history'

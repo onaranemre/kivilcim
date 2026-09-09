@@ -4,10 +4,12 @@ import type { DieResult, ResultMap, Screen } from './types'
 import { DurationPicker } from './components/DurationPicker'
 import { DiceBoard } from './components/DiceBoard'
 import { SessionTimer } from './components/SessionTimer'
+import { History } from './components/History'
 import { ThemeToggle } from './components/ThemeToggle'
 import { DieFace } from './components/DieFace'
 import { useTheme } from './hooks/useTheme'
 import { useCountdown } from './hooks/useCountdown'
+import { useHistory, sameRound, type HistoryRound } from './hooks/useHistory'
 import styles from './App.module.css'
 
 const EMPTY_RESULTS: ResultMap = {
@@ -25,6 +27,7 @@ export default function App() {
 
   const { effective, toggle } = useTheme()
   const timer = useCountdown()
+  const history = useHistory()
 
   const anyRolled = Object.values(results).some(Boolean)
   const hasProgress = timer.active || anyRolled
@@ -46,6 +49,9 @@ export default function App() {
   }
 
   const startSession = () => {
+    const latest = history.rounds[0]
+    const isDupe = !!latest && latest.minutes === minutes && sameRound(results, latest.results)
+    if (!isDupe) history.add(minutes, results)
     timer.start(minutes * 60_000)
     setScreen('session')
   }
@@ -54,6 +60,14 @@ export default function App() {
     timer.stop()
     setResults(EMPTY_RESULTS)
     setScreen('setup')
+  }
+
+  // Geçmişten bir tur: sonuçları yükle, zar ekranına geç (istenirse değiştirilebilir).
+  const replayRound = (round: HistoryRound) => {
+    timer.stop()
+    setMinutes(round.minutes)
+    setResults(round.results)
+    setScreen('rolling')
   }
 
   return (
@@ -71,6 +85,17 @@ export default function App() {
 
       {screen === 'setup' && (
         <section className={styles.stage} key="setup">
+          {history.rounds.length > 0 && (
+            <div className={styles.setupNav}>
+              <button
+                type="button"
+                className="btn btn--ghost"
+                onClick={() => setScreen('history')}
+              >
+                geçmiş · {history.rounds.length}
+              </button>
+            </div>
+          )}
           <DurationPicker
             initial={minutes}
             confirmLabel={hasProgress ? 'devam →' : 'zarları getir →'}
@@ -118,6 +143,30 @@ export default function App() {
             </button>
           </div>
           <SessionTimer timer={timer} results={results} onRestart={restart} />
+        </section>
+      )}
+
+      {screen === 'history' && (
+        <section className={styles.stage} key="history">
+          <div className={styles.stageNav}>
+            <button
+              type="button"
+              className="btn btn--ghost"
+              onClick={() => setScreen('setup')}
+            >
+              ← geri
+            </button>
+            {history.rounds.length > 0 && (
+              <button type="button" className="btn btn--ghost" onClick={history.clear}>
+                tümünü sil
+              </button>
+            )}
+          </div>
+          <History
+            rounds={history.rounds}
+            onReplay={replayRound}
+            onDelete={history.remove}
+          />
         </section>
       )}
     </main>
