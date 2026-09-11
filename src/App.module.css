@@ -88,3 +88,16 @@
   text-transform: lowercase;
   color: var(--text-faint);
 }
+
+/*
+ * Başlığın hemen altındaki imza. Kasıtlı olarak beyaz: sitedeki tek-renk
+ * metin kuralının dışında, temadan bağımsız sabit bir imza rengi.
+ */
+.signature {
+  margin-top: -6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  color: #fff;
+  opacity: 0.7;
+}

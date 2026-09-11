@@ -81,6 +81,7 @@ export default function App() {
           <DieFace face={3} />
         </div>
         <h1 className={styles.title}>kıvılcım</h1>
+        <p className={styles.signature}>emre onaran</p>
       </header>
 
       {screen === 'setup' && (

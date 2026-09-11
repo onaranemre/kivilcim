@@ -283,7 +283,7 @@ h3 {
 .app {
   max-width: 940px;
   margin: 0 auto;
-  padding: clamp(28px, 6vw, 72px) clamp(18px, 5vw, 40px) 120px;
+  padding: clamp(28px, 6vw, 72px) clamp(18px, 5vw, 40px) clamp(28px, 6vw, 56px);
 }
 
 .eyebrow {
@@ -320,6 +320,12 @@ h3 {
   z-index: 1;
 }
 
+/*
+ * Temel buton nötr cam. Turuncu sadece asıl akış CTA'larında (.btn--primary):
+ * "zarları getir / devam / şarkıya başla". Diğer her şey — duraklat, geçmiş,
+ * sıfırla, küçült, yeni tur, zarlara dön, süreyi değiştir — ikincil, ghost
+ * kalır. Cevap kutuları (DieCard, sayaç özeti) da kasıtlı olarak nötr camda.
+ */
 .btn {
   position: relative;
   display: inline-flex;
@@ -383,6 +389,7 @@ h3 {
   opacity: 0.34;
 }
 
+/* Turuncu, düz dolgu CTA — camsı değil, en yüksek kontrastlı buton. */
 .btn--primary {
   background: linear-gradient(180deg, var(--spark), var(--spark-soft));
   backdrop-filter: none;
@@ -405,7 +412,7 @@ h3 {
 }
 
 /*
- * Ghost = "krom": saydam, ince kenarlı, mat metin. Cam dolgulu cevap
+ * Ghost = "krom": saydam, ince kenarlı, mat metin. Cam dolgulu CTA/cevap
  * kutularıyla karışmasın diye camsı malzemesi tamamen kaldırıldı.
  */
 .btn--ghost {

@@ -34,7 +34,10 @@
   }
 }
 
-/* Sadece atılan değer; başlık yok, kutunun tam ortasında */
+/*
+ * Sadece atılan değer; başlık yok, kutunun tam ortasında. İçerik/cevap
+ * olduğu için nötr cam — renk (turuncu) sadece butonlarda: bkz. theme.css .btn
+ */
 .chip {
   position: relative;
   min-height: 62px;
