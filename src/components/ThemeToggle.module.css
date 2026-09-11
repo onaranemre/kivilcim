@@ -50,11 +50,14 @@
   pointer-events: none;
 }
 
-/* Hover dönüşünü ikonda yapıyoruz; buton transform'u konumlama için serbest kalsın */
+/*
+ * Hover ve basma animasyonlarını ikonda yapıyoruz; butonun kendi transform'u
+ * JS'e ait (visualViewport konumlama) ve serbest kalması gerekiyor.
+ */
 .btn svg {
   width: 17px;
   height: 17px;
-  transition: transform 0.2s var(--ease-out);
+  transition: transform 0.45s var(--ease-bounce);
 }
 
 .btn:hover {
@@ -66,4 +69,9 @@
 
 .btn:hover svg {
   transform: rotate(-18deg);
+}
+
+.btn:active svg {
+  transition: transform 0.08s ease-out;
+  transform: scale(0.7);
 }

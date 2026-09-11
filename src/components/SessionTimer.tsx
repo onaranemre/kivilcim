@@ -15,8 +15,10 @@ const CIRC = 2 * Math.PI * R
 
 export function SessionTimer({ timer, results, onRestart }: Props) {
   const { remaining, total, running, done } = timer
-  const progress = total > 0 ? 1 - remaining / total : 0
-  const offset = CIRC * (1 - Math.min(1, Math.max(0, progress)))
+  // Halka toplam süreyi temsil ediyor: dolu başlar, süre azaldıkça
+  // (biriken değil, tüketilen bir şey gibi) 12 yönünden başlayarak erir.
+  const elapsed = total > 0 ? 1 - remaining / total : 0
+  const offset = CIRC * Math.min(1, Math.max(0, elapsed))
 
   return (
     <div className={styles.wrap}>

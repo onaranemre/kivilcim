@@ -69,12 +69,20 @@
   font-size: 17px;
   line-height: 1;
   color: var(--text-faint);
-  transition: color 0.18s ease, background 0.18s ease;
+  transition:
+    color 0.18s ease,
+    background 0.18s ease,
+    transform 0.45s var(--ease-bounce);
 }
 
 .del:hover {
   color: var(--spark);
   background: var(--spark-tint);
+}
+
+.del:active {
+  transition: transform 0.08s ease-out;
+  transform: scale(0.72);
 }
 
 .values {

@@ -37,18 +37,19 @@
 /*
  * Sadece atılan değer; başlık yok, kutunun tam ortasında. İçerik/cevap
  * olduğu için nötr cam — renk (turuncu) sadece butonlarda: bkz. theme.css .btn
+ * Basma değil, üzerine gelince hafif büyüme animasyonu var (bkz. :hover).
  */
 .chip {
   position: relative;
-  min-height: 62px;
+  min-height: 72px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 16px;
+  padding: 16px 20px;
   border-radius: var(--radius-sm);
   text-align: center;
   font-family: var(--font-display);
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.3;
   color: var(--text);
   background: var(--glass-gloss), var(--glass-bg);
@@ -58,6 +59,15 @@
     inset 0 1px 0 var(--glass-sheen),
     inset 0 -1px 0 var(--glass-sheen-b),
     var(--glass-shadow);
+  transition: transform 0.3s var(--ease-bounce), box-shadow 0.3s ease;
+}
+
+.chip:hover {
+  transform: scale(1.045);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    0 20px 40px -26px var(--glow-spark);
 }
 
 .chip::before {
@@ -129,6 +139,16 @@
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
+}
+
+/*
+ * Bütün kontrol butonları aynı genişlikte: hem "devam"/"duraklat" arasında
+ * geçişte buton boyu oynamasın, hem de grup ortalandığında ortadaki buton
+ * (sıfırla) sayfanın tam ortasına denk gelsin.
+ */
+.controls button {
+  width: 152px;
+  white-space: nowrap;
 }
 
 .pulse {

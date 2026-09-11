@@ -45,8 +45,11 @@
   --stop: calc(var(--fill, 0) * (100% - var(--thumb)) + var(--thumb) / 2);
   -webkit-appearance: none;
   appearance: none;
+  display: block;
   width: 100%;
   height: 3px;
+  margin: 0;
+  padding: 0;
   border-radius: 999px;
   background: linear-gradient(
     to right,
@@ -55,7 +58,20 @@
     var(--line) var(--stop),
     var(--line) 100%
   );
+  /* Basamaklar arasında dolgu sekmesin, yumuşakça kayarak geçsin. */
+  transition: background 0.28s var(--ease-out);
   outline: none;
+}
+
+/* Topuzun etrafında yavaşça soluyan bir halka — çubuk "canlı" dursun. */
+@keyframes thumb-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 6px var(--spark-tint), 0 6px 20px -6px var(--glow-spark);
+  }
+  50% {
+    box-shadow: 0 0 0 11px var(--spark-tint), 0 8px 26px -4px var(--glow-spark);
+  }
 }
 
 .range::-webkit-slider-thumb {
@@ -66,9 +82,9 @@
   border-radius: 50%;
   background: var(--text);
   border: 4px solid var(--spark-soft);
-  box-shadow: 0 0 0 6px rgba(200, 98, 47, 0.16), 0 6px 20px -6px var(--glow-spark);
   cursor: grab;
-  transition: transform 0.15s ease;
+  transition: transform 0.25s var(--ease-out);
+  animation: thumb-pulse 2.2s ease-in-out infinite;
 }
 
 .range::-webkit-slider-thumb:active {
@@ -83,13 +99,37 @@
   background: var(--text);
   border: 4px solid var(--spark-soft);
   cursor: grab;
+  transition: transform 0.25s var(--ease-out);
+  animation: thumb-pulse 2.2s ease-in-out infinite;
 }
 
+.range::-moz-range-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.12);
+}
+
+/*
+ * grid + eşit sütun: "space-between" ile ortadaki "30dk" etiketi, uçlardaki
+ * "0dk"/"60dk" metinleri farklı genişlikte olduğu için birkaç piksel kayıyordu.
+ * Üç eşit sütun + her birinin kendi hizası, ortadakini gerçekten tam ortalar.
+ */
 .ticks {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--text-faint);
+}
+
+.ticks span:first-child {
+  text-align: left;
+}
+
+.ticks span:nth-child(2) {
+  text-align: center;
+}
+
+.ticks span:last-child {
+  text-align: right;
 }

@@ -19,7 +19,7 @@
   -webkit-tap-highlight-color: transparent;
   will-change: transform;
   transition:
-    transform 0.22s var(--ease-out),
+    transform 0.45s var(--ease-bounce),
     box-shadow 0.3s ease;
 }
 
@@ -55,7 +55,8 @@
 }
 
 .card:active {
-  transform: translateY(0) scale(0.985);
+  transition: transform 0.08s ease-out;
+  transform: translateY(0) scale(0.94);
 }
 
 /* Atış anında kart öne çıkar */
@@ -80,7 +81,7 @@
 
 /*
  * Kartın içinde tek bir metin, dikey ve yatay tam ortada:
- *  boşken zar adı (tarz / duygu…), atarken akan değer, sonra sonuç.
+ *  boşken zar adı (tarz / duygu…), atılırken akan değer, sonra sonuç.
  */
 .body {
   flex: 1;
