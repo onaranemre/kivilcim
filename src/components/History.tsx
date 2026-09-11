@@ -66,7 +66,7 @@ export function History({ rounds, onReplay, onDelete }: Props) {
 
           <button
             type="button"
-            className={`btn btn--ghost ${styles.replay}`}
+            className={`btn btn--primary ${styles.replay}`}
             onClick={() => onReplay(round)}
           >
             bu turla başla →

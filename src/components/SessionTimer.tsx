@@ -56,7 +56,7 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
 
       <div className={styles.controls}>
         {!done && (
-          <button type="button" className="btn" onClick={timer.toggle}>
+          <button type="button" className="btn btn--primary" onClick={timer.toggle}>
             {running ? '❚❚ Duraklat' : '▶ Devam'}
           </button>
         )}
@@ -70,7 +70,7 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
             onClick={timer.openPip}
             disabled={timer.pipActive}
           >
-            ⧉ {timer.pipActive ? 'Pencerede' : 'Küçült'}
+            ⌧ {timer.pipActive ? 'Pencerede' : 'Küçült'}
           </button>
         )}
         <button type="button" className="btn btn--ghost" onClick={onRestart}>
