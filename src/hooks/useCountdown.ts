@@ -9,7 +9,7 @@ export function fmtClock(ms: number): string {
 
 /*
  * PiP penceresi ayrı bir document — sitenin CSS'ine erişemiyor. Bu yüzden
- * açılış anında geçerli temanin (açık/koyu, sistem ya da elle seçilmiş)
+ * açılış anında geçerli temananın (açık/koyu, sistem ya da elle seçilmiş)
  * çözümlenmiş --token değerlerini <html>'den okuyup kendi :root'una
  * kopyalıyoruz; geri kalan kurallar aynı sitedeki gibi var(--token) kullanıyor.
  * Böylece saat fontu, arka plan ve buton camsı görünümü sitenin o anki
@@ -44,6 +44,7 @@ function buildPipCss(tokenBlock: string): string {
   * { box-sizing: border-box; margin: 0; }
   html, body { height: 100%; }
   body {
+    position: relative;
     background:
       radial-gradient(120% 90% at 12% -10%, var(--halo-1), transparent 55%),
       radial-gradient(90% 80% at 100% 0%, var(--halo-2), transparent 50%),
@@ -51,60 +52,94 @@ function buildPipCss(tokenBlock: string): string {
       var(--bg-0);
     color: var(--text);
     font-family: var(--font-mono);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 8px;
-    text-transform: lowercase;
+    overflow: hidden;
     user-select: none;
     -webkit-user-select: none;
   }
+  /*
+   * Ayrı bir duraklat/devam düğmesi yok — saatin kendisi tıklanabilir bir
+   * buton: üzerine gelince rakamlar söner, yerine duraklat/devam ikonu
+   * belirir (video oynatıcılardaki gibi). Tek unsur, pencerenin tam
+   * merkezinde; .t ve .icon aynı grid hücresinde üst üste dururlar.
+   */
+  .clock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    border: none;
+    background: none;
+    padding: 12px 18px;
+    cursor: pointer;
+  }
+  .clock:disabled {
+    cursor: default;
+  }
+  .clock .t,
+  .clock .icon {
+    grid-area: 1 / 1;
+  }
   .t {
     font-family: var(--font-display);
-    font-size: 44px;
+    font-size: 58px;
     font-weight: 300;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.01em;
     color: var(--text);
+    transition: opacity 0.18s var(--ease-out);
   }
-  .s {
-    font-size: 10px;
-    letter-spacing: 0.28em;
-    color: var(--text);
-    opacity: 0.7;
+  /*
+   * İkon: daire/rozet yok — camın kendisi duraklat/oynat şeklinde kesiliyor
+   * (CSS mask). Ana ekrandaki saatle birebir aynı tema: düz var(--spark),
+   * cam/gloss katmanı yok.
+   */
+  .icon {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background: var(--spark);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.18s var(--ease-out), transform 0.18s var(--ease-out);
   }
-  /* Sitedeki .btn--primary ile birebir aynı: düz dolgu turuncu, camsı değil. */
-  button {
-    margin-top: 4px;
-    font-family: var(--font-mono);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: lowercase;
-    padding: 9px 18px;
-    border-radius: var(--radius-sm);
-    border: none;
-    cursor: pointer;
-    color: var(--paper);
-    background: linear-gradient(180deg, var(--spark), var(--spark-soft));
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      0 12px 28px -14px var(--glow-spark);
-    transition: transform 0.18s var(--ease-out), box-shadow 0.25s ease;
+  .icon--pause {
+    -webkit-mask-image: ${PAUSE_MASK};
+    mask-image: ${PAUSE_MASK};
   }
-  button:hover {
-    transform: translateY(-1px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.36),
-      0 16px 36px -14px var(--glow-spark);
+  .icon--play {
+    -webkit-mask-image: ${PLAY_MASK};
+    mask-image: ${PLAY_MASK};
+  }
+  .clock:not(:disabled):hover .t {
+    opacity: 0.12;
+  }
+  .clock:not(:disabled):hover .icon {
+    opacity: 1;
+    transform: scale(1);
   }
   [hidden] { display: none; }
   `
 }
 
+const PAUSE_MASK =
+  `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='5' width='4' height='14' rx='1.3'/%3E%3Crect x='14' y='5' width='4' height='14' rx='1.3'/%3E%3C/svg%3E")`
+const PLAY_MASK =
+  `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5.14v13.72a1 1 0 0 0 1.53.85l10.68-6.86a1 1 0 0 0 0-1.7L9.53 4.3A1 1 0 0 0 8 5.14Z'/%3E%3C/svg%3E")`
+
 const PIP_HTML = `
-  <div class="t" id="pip-time">00:00</div>
-  <div class="s" id="pip-state">akıyor</div>
-  <button id="pip-toggle" type="button">duraklat</button>
+  <button class="clock" id="pip-clock" type="button" aria-label="duraklat">
+    <span class="t" id="pip-time">00:00</span>
+    <span class="icon icon--pause" id="pip-icon" aria-hidden></span>
+  </button>
 `
 
 export interface Countdown {
@@ -241,7 +276,7 @@ export function useCountdown(): Countdown {
         pip.document.title = 'kıvılcım'
 
         pip.document
-          .getElementById('pip-toggle')
+          .getElementById('pip-clock')
           ?.addEventListener('click', () => toggle())
 
         pip.addEventListener('pagehide', () => {
@@ -266,13 +301,13 @@ export function useCountdown(): Countdown {
     const pip = pipWinRef.current
     if (!pip) return
     const t = pip.document.getElementById('pip-time')
-    const s = pip.document.getElementById('pip-state')
-    const b = pip.document.getElementById('pip-toggle') as HTMLElement | null
+    const icon = pip.document.getElementById('pip-icon')
+    const clock = pip.document.getElementById('pip-clock') as HTMLButtonElement | null
     if (t) t.textContent = fmtClock(remaining)
-    if (s) s.textContent = done ? 'süre doldu' : running ? 'akıyor' : 'duraklatıldı'
-    if (b) {
-      b.textContent = running ? 'duraklat' : 'devam'
-      b.hidden = done
+    if (icon) icon.className = running ? 'icon icon--pause' : 'icon icon--play'
+    if (clock) {
+      clock.disabled = done
+      clock.setAttribute('aria-label', done ? 'süre doldu' : running ? 'duraklat' : 'devam')
     }
   }, [remaining, running, done, pipActive])
 
