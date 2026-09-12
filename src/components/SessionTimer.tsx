@@ -14,24 +14,60 @@ const R = 150
 const CIRC = 2 * Math.PI * R
 
 export function SessionTimer({ timer, results, onRestart }: Props) {
-  const { remaining, total, running, done } = timer
+  const { remaining, total, running, done, unlimited } = timer
   // Halka toplam süreyi temsil ediyor: dolu başlar, süre azaldıkça
   // (biriken değil, tüketilen bir şey gibi) 12 yönünden başlayarak erir.
   const elapsed = total > 0 ? 1 - remaining / total : 0
   const offset = CIRC * Math.min(1, Math.max(0, elapsed))
 
+  const summary = (
+    <div className={styles.summary}>
+      {DICE.map((d) => {
+        const r = results[d.id]
+        return (
+          <div key={d.id} className={styles.chip}>
+            {r ? r.label : '—'}
+          </div>
+        )
+      })}
+    </div>
+  )
+
+  // Süresiz turda saya hiç çalışmaz — halka şekli kalır (tam dolu, sabit),
+  // akan rakamların yerinde sonsuzluk işareti durur. Tıklanabilir değil:
+  // duraklat/sıfırla/küçült yok, tek çıkış "yeni tur".
+  if (unlimited) {
+    return (
+      <div className={styles.wrap}>
+        {summary}
+        <div className={`${styles.clock} ${styles.clockStatic} ${styles.pulse}`}>
+          <svg className={styles.ring} viewBox="0 0 320 320" aria-hidden>
+            <circle className={styles.ringTrack} cx="160" cy="160" r={R} />
+            <circle
+              className={styles.ringProg}
+              cx="160"
+              cy="160"
+              r={R}
+              strokeDasharray={CIRC}
+              strokeDashoffset={0}
+            />
+          </svg>
+          <div className={styles.infinity} aria-hidden>
+            ∞
+          </div>
+        </div>
+        <div className={styles.controls}>
+          <button type="button" className="btn btn--primary" onClick={onRestart}>
+            Yeni tur
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={styles.wrap}>
-      <div className={styles.summary}>
-        {DICE.map((d) => {
-          const r = results[d.id]
-          return (
-            <div key={d.id} className={styles.chip}>
-              {r ? r.label : '—'}
-            </div>
-          )
-        })}
-      </div>
+      {summary}
 
       {/*
        * Ayrı bir duraklat/devam butonu yok — saatin kendisi tıklanabilir:

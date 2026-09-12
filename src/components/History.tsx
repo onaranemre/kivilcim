@@ -38,7 +38,7 @@ export function History({ rounds, onReplay, onDelete }: Props) {
       {rounds.map((round) => (
         <li key={round.id} className={styles.round}>
           <div className={styles.meta}>
-            <span>{round.minutes} dk</span>
+            <span>{round.minutes === 0 ? 'süresiz' : `${round.minutes} dk`}</span>
             <span className={styles.dot} aria-hidden>
               ·
             </span>
@@ -64,6 +64,8 @@ export function History({ rounds, onReplay, onDelete }: Props) {
               ) : null
             })}
           </div>
+
+          {round.notes?.trim() && <p className={styles.notes}>{round.notes}</p>}
 
           <button
             type="button"

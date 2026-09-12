@@ -8,6 +8,7 @@ export interface HistoryRound {
   date: number
   minutes: number
   results: ResultMap
+  notes?: string
 }
 
 const KEY = 'kivilcim-history'
@@ -48,15 +49,17 @@ export function sameRound(a: ResultMap, b: ResultMap | undefined): boolean {
 export function useHistory() {
   const [rounds, setRounds] = useState<HistoryRound[]>(read)
 
-  const add = useCallback((minutes: number, results: ResultMap) => {
+  const add = useCallback((minutes: number, results: ResultMap, notes?: string) => {
+    const id = uid()
     setRounds((prev) => {
       const next = [
-        { id: uid(), date: Date.now(), minutes, results: { ...results } },
+        { id, date: Date.now(), minutes, results: { ...results }, ...(notes ? { notes } : {}) },
         ...prev,
       ].slice(0, MAX)
       write(next)
       return next
     })
+    return id
   }, [])
 
   const remove = useCallback((id: string) => {
@@ -72,5 +75,15 @@ export function useHistory() {
     write([])
   }, [])
 
-  return { rounds, add, remove, clear }
+  // Not defterine yazılanları ilgili turun geçmiş kaydına da işler — sayfa
+  // yenilense veya geçmişten geri dönülse bile notlar kaybolmaz.
+  const updateNotes = useCallback((id: string, notes: string) => {
+    setRounds((prev) => {
+      const next = prev.map((r) => (r.id === id ? { ...r, notes } : r))
+      write(next)
+      return next
+    })
+  }, [])
+
+  return { rounds, add, remove, clear, updateNotes }
 }

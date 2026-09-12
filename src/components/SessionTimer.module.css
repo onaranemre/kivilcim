@@ -100,6 +100,15 @@
   pointer-events: none;
 }
 
+/* Süresiz turda akan rakamların yerini alan sabit sonsuzluk işareti — halka tam dolu, saya çalışmaz. */
+.infinity {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 15vw, 84px);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--text);
+}
+
 .clock {
   position: relative;
   width: min(320px, 78vw);
@@ -111,6 +120,10 @@
 }
 
 .clock:disabled {
+  cursor: default;
+}
+
+.clockStatic {
   cursor: default;
 }
 

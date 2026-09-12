@@ -13,12 +13,13 @@ interface Props {
 
 export function DurationPicker({ initial = 30, confirmLabel = 'zarları getir →', onConfirm }: Props) {
   const [minutes, setMinutes] = useState(initial)
+  const unlimited = minutes === 0
 
   return (
     <div className={styles.wrap}>
       <div className={styles.readout}>
-        <span className={styles.num}>{minutes}</span>
-        <span className={styles.unit}>dakika</span>
+        <span className={styles.num}>{unlimited ? '∞' : minutes}</span>
+        <span className={styles.unit}>{unlimited ? 'süresiz' : 'dakika'}</span>
       </div>
 
       <div className={styles.sliderRow}>
@@ -30,23 +31,18 @@ export function DurationPicker({ initial = 30, confirmLabel = 'zarları getir �
           step={STEP}
           value={minutes}
           aria-label="Süre (dakika)"
-          aria-valuetext={`${minutes} dakika`}
+          aria-valuetext={unlimited ? 'süresiz' : `${minutes} dakika`}
           onChange={(e) => setMinutes(Number(e.target.value))}
           style={{ ['--fill' as string]: String((minutes - MIN) / (MAX - MIN)) }}
         />
         <div className={styles.ticks}>
-          <span>0dk</span>
+          <span>∞</span>
           <span>30dk</span>
           <span>60dk</span>
         </div>
       </div>
 
-      <button
-        type="button"
-        className="btn btn--primary"
-        disabled={minutes === 0}
-        onClick={() => onConfirm(minutes)}
-      >
+      <button type="button" className="btn btn--primary" onClick={() => onConfirm(minutes)}>
         {confirmLabel}
       </button>
     </div>

@@ -9,7 +9,7 @@ export function fmtClock(ms: number): string {
 
 /*
  * PiP penceresi ayrı bir document — sitenin CSS'ine erişemiyor. Bu yüzden
- * açılış anında geçerli temananın (açık/koyu, sistem ya da elle seçilmiş)
+ * açılış anında geçerli temanın (açık/koyu, sistem ya da elle seçilmiş)
  * çözümlenmiş --token değerlerini <html>'den okuyup kendi :root'una
  * kopyalıyoruz; geri kalan kurallar aynı sitedeki gibi var(--token) kullanıyor.
  * Böylece saat fontu, arka plan ve buton camsı görünümü sitenin o anki
@@ -146,9 +146,10 @@ export interface Countdown {
   active: boolean
   running: boolean
   done: boolean
+  unlimited: boolean
   remaining: number
   total: number
-  start: (ms: number) => void
+  start: (ms: number, unlimited?: boolean) => void
   toggle: () => void
   reset: () => void
   stop: () => void
@@ -163,6 +164,9 @@ export function useCountdown(): Countdown {
   const [remaining, setRemaining] = useState(0)
   const [running, setRunning] = useState(false)
   const [active, setActive] = useState(false)
+  // Süre 0 seçilince saya hiç çalışmaz — sadece sonsuzluk işareti gösterilir,
+  // duraklatma/sıfırlama yok, tek çıkış "yeni tur".
+  const [unlimited, setUnlimited] = useState(false)
   const [pipActive, setPipActive] = useState(false)
   // Bir açma denemesi gerçekten başarısız olursa (izin/politika engeli),
   // düğmeyi bir daha göstermeyip kullanıcıyı çalışmayan bir seçenekle
@@ -171,10 +175,12 @@ export function useCountdown(): Countdown {
 
   const endAtRef = useRef(0)
   const remainingRef = useRef(0)
+  const unlimitedRef = useRef(false)
   const tickRef = useRef<number | null>(null)
   const pipWinRef = useRef<Window | null>(null)
 
   remainingRef.current = remaining
+  unlimitedRef.current = unlimited
 
   // Sadece özelliğin varlığını değil, gerçekten çağrılabilir olduğunu ve
   // güvenli bağlamda çalıştığını da kontrol ediyoruz — API'yi destekleyen
@@ -207,18 +213,27 @@ export function useCountdown(): Countdown {
   }, [stopTick])
 
   const start = useCallback(
-    (ms: number) => {
+    (ms: number, isUnlimited = false) => {
+      setUnlimited(isUnlimited)
+      setActive(true)
+      if (isUnlimited) {
+        setRunning(false)
+        setTotal(0)
+        setRemaining(0)
+        stopTick()
+        return
+      }
+      setRunning(true)
       setTotal(ms)
       setRemaining(ms)
-      setActive(true)
-      setRunning(true)
       endAtRef.current = Date.now() + ms
       startTick()
     },
-    [startTick],
+    [startTick, stopTick],
   )
 
   const toggle = useCallback(() => {
+    if (unlimitedRef.current) return
     setRunning((r) => {
       if (r) {
         stopTick()
@@ -233,6 +248,7 @@ export function useCountdown(): Countdown {
   }, [startTick, stopTick])
 
   const reset = useCallback(() => {
+    if (unlimitedRef.current) return
     setRunning(false)
     stopTick()
     setRemaining(total)
@@ -251,6 +267,7 @@ export function useCountdown(): Countdown {
     setActive(false)
     setRemaining(0)
     setTotal(0)
+    setUnlimited(false)
     closePip()
   }, [stopTick, closePip])
 
@@ -294,7 +311,8 @@ export function useCountdown(): Countdown {
       })
   }, [toggle])
 
-  const done = active && remaining <= 0
+  // Süresiz modda otomatik "bitiş" yok — kullanıcı isterse "yeni tur" ile çıkar.
+  const done = !unlimited && active && remaining <= 0
 
   // PiP penceresi içeriğini güncel tut
   useEffect(() => {
@@ -317,6 +335,7 @@ export function useCountdown(): Countdown {
     active,
     running,
     done,
+    unlimited,
     remaining,
     total,
     start,
