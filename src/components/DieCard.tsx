@@ -58,6 +58,7 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
         phase === 'settling' ? 'is-settling' : ''
       }`}
       data-state={state}
+      data-press
       role="button"
       tabIndex={0}
       aria-label={`${meta.title} zarını at`}

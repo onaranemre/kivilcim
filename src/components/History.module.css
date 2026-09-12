@@ -80,7 +80,7 @@
   background: var(--spark-tint);
 }
 
-.del:active {
+.del:is(:active, [data-pressed]) {
   transition: transform 0.08s ease-out;
   transform: scale(0.72);
 }

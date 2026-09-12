@@ -70,6 +70,15 @@
     0 20px 40px -26px var(--glow-spark);
 }
 
+/*
+ * Kelime kutusu tam satır genişliğinde — aynı ölçek oranı (scale) onda
+ * çok daha fazla piksel büyüme olarak görünüyordu (genişlik ~4 katı).
+ * Diğerleriyle aynı büyüklükte hissettirmesi için ölçeği orantılı küçülttük.
+ */
+.summary > :last-child:hover {
+  transform: scale(1.012);
+}
+
 .chip::before {
   content: '';
   position: absolute;
@@ -97,6 +106,12 @@
   aspect-ratio: 1;
   display: grid;
   place-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.clock:disabled {
+  cursor: default;
 }
 
 .ring {
@@ -112,13 +127,14 @@
   stroke-width: 2;
 }
 
+/* Girişteki süre çubuğuyla aynı tema: dolu kısım düz var(--spark), boş kısım var(--line). */
 .ringProg {
   fill: none;
-  stroke: url(#tgrad);
+  stroke: var(--spark);
   stroke-width: 3;
   stroke-linecap: round;
   transition: stroke-dashoffset 0.9s linear;
-  filter: drop-shadow(0 0 8px var(--glow-spark));
+  filter: drop-shadow(0 0 3px var(--glow-spark));
 }
 
 .time {
@@ -128,10 +144,64 @@
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
   color: var(--text);
+  transition: opacity 0.2s var(--ease-out);
 }
 
 .done .time {
   color: var(--calm);
+}
+
+/*
+ * Duraklat/oynat ikonu: daire/zemin yok, camın kendisi ikon şeklinde
+ * kesiliyor (CSS mask). Üzerine gelince saat sönük, ikon belirir. Rengi
+ * halka ve girişteki süre çubuğuyla birebir aynı: düz var(--spark).
+ */
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  width: 72px;
+  height: 72px;
+  background: var(--spark);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease-out), transform 0.35s var(--ease-bounce);
+}
+
+.iconPause {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='5' width='4' height='14' rx='1.3'/%3E%3Crect x='14' y='5' width='4' height='14' rx='1.3'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='5' width='4' height='14' rx='1.3'/%3E%3Crect x='14' y='5' width='4' height='14' rx='1.3'/%3E%3C/svg%3E");
+}
+
+.iconPlay {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5.14v13.72a1 1 0 0 0 1.53.85l10.68-6.86a1 1 0 0 0 0-1.7L9.53 4.3A1 1 0 0 0 8 5.14Z'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8 5.14v13.72a1 1 0 0 0 1.53.85l10.68-6.86a1 1 0 0 0 0-1.7L9.53 4.3A1 1 0 0 0 8 5.14Z'/%3E%3C/svg%3E");
+}
+
+.clock:not(:disabled):hover .time {
+  opacity: 0.15;
+}
+
+.clock:not(:disabled):hover .icon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/*
+ * Basma animasyonu sadece ikonda (logoda) olsun — halkanın/saatin tamamı
+ * küçülmesin. Hover kuralından SONRA tanımlı ki basılıyken her zaman kazansın.
+ */
+.clock:is(:active, [data-pressed]):not(:disabled) .icon {
+  transition: transform 0.05s ease-out;
+  transform: translate(-50%, -50%) scale(0.85);
 }
 
 .controls {

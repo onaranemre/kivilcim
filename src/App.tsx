@@ -5,9 +5,7 @@ import { DurationPicker } from './components/DurationPicker'
 import { DiceBoard } from './components/DiceBoard'
 import { SessionTimer } from './components/SessionTimer'
 import { History } from './components/History'
-import { ThemeToggle } from './components/ThemeToggle'
 import { DieFace } from './components/DieFace'
-import { useTheme } from './hooks/useTheme'
 import { useCountdown } from './hooks/useCountdown'
 import { useHistory, sameRound, type HistoryRound } from './hooks/useHistory'
 import styles from './App.module.css'
@@ -25,7 +23,6 @@ export default function App() {
   const [minutes, setMinutes] = useState(30)
   const [results, setResults] = useState<ResultMap>(EMPTY_RESULTS)
 
-  const { effective, toggle } = useTheme()
   const timer = useCountdown()
   const history = useHistory()
 
@@ -62,6 +59,23 @@ export default function App() {
     setScreen('setup')
   }
 
+  // Geçmişi tamamen silmek, üzerinde çalışılan turu da bırakır — aksi halde
+  // geçmiş boşalır ama ekranda hâlâ atılmış zarlar/aktif sayaç kalırdı.
+  const clearAllHistory = () => {
+    history.clear()
+    restart()
+  }
+
+  // Tek bir turu silmek: eğer silinen tur şu an ekranda duran/üzerinde
+  // çalışılan turun ta kendisiyse (aynı süre + aynı zar sonuçları), o turu
+  // da bırak — aksi halde geçmişten "silinmiş" bir tur ekranda asılı kalırdı.
+  const deleteRound = (id: string) => {
+    const round = history.rounds.find((r) => r.id === id)
+    const isCurrent = !!round && round.minutes === minutes && sameRound(results, round.results)
+    history.remove(id)
+    if (isCurrent) restart()
+  }
+
   // Geçmişten bir tur: sonuçları yükle, zar ekranına geç (istenirse değiştirilebilir).
   const replayRound = (round: HistoryRound) => {
     timer.stop()
@@ -72,8 +86,6 @@ export default function App() {
 
   return (
     <main className={`${styles.app} app`}>
-      <ThemeToggle theme={effective} onToggle={toggle} />
-
       <header className={styles.header}>
         <div className={styles.mark} aria-hidden>
           <DieFace face={2} />
@@ -158,7 +170,7 @@ export default function App() {
               ← geri
             </button>
             {history.rounds.length > 0 && (
-              <button type="button" className="btn btn--ghost" onClick={history.clear}>
+              <button type="button" className="btn btn--ghost" onClick={clearAllHistory}>
                 tümünü sil
               </button>
             )}
@@ -166,7 +178,7 @@ export default function App() {
           <History
             rounds={history.rounds}
             onReplay={replayRound}
-            onDelete={history.remove}
+            onDelete={deleteRound}
           />
         </section>
       )}

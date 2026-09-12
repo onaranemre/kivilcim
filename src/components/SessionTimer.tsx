@@ -33,16 +33,20 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
         })}
       </div>
 
-      <div
+      {/*
+       * Ayrı bir duraklat/devam butonu yok — saatin kendisi tıklanabilir:
+       * üzerine gelince rakamlar söner, yerine PiP penceresindeki ile aynı
+       * camsı duraklat/oynat ikonu belirir.
+       */}
+      <button
+        type="button"
         className={`${styles.clock} ${done ? styles.done : ''} ${running ? styles.pulse : ''}`}
+        data-press
+        onClick={timer.toggle}
+        disabled={done}
+        aria-label={done ? 'süre doldu' : running ? 'duraklat' : 'devam'}
       >
         <svg className={styles.ring} viewBox="0 0 320 320" aria-hidden>
-          <defs>
-            <linearGradient id="tgrad" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stopColor="var(--spark)" />
-              <stop offset="1" stopColor="var(--calm)" />
-            </linearGradient>
-          </defs>
           <circle className={styles.ringTrack} cx="160" cy="160" r={R} />
           <circle
             className={styles.ringProg}
@@ -54,14 +58,13 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
           />
         </svg>
         <div className={styles.time}>{fmtClock(remaining)}</div>
-      </div>
+        <span
+          className={`${styles.icon} ${running ? styles.iconPause : styles.iconPlay}`}
+          aria-hidden
+        />
+      </button>
 
       <div className={styles.controls}>
-        {!done && (
-          <button type="button" className="btn btn--primary" onClick={timer.toggle}>
-            {running ? '❚❚ Duraklat' : '▶ Devam'}
-          </button>
-        )}
         <button type="button" className="btn btn--ghost" onClick={timer.reset}>
           ↺ Sıfırla
         </button>
@@ -72,10 +75,10 @@ export function SessionTimer({ timer, results, onRestart }: Props) {
             onClick={timer.openPip}
             disabled={timer.pipActive}
           >
-            ⌧ {timer.pipActive ? 'Pencerede' : 'Küçült'}
+            ⧉ {timer.pipActive ? 'Pencerede' : 'Küçült'}
           </button>
         )}
-        <button type="button" className="btn btn--ghost" onClick={onRestart}>
+        <button type="button" className="btn btn--primary" onClick={onRestart}>
           Yeni tur
         </button>
       </div>

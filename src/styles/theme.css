@@ -1,139 +1,9 @@
 /* ------------------------------------------------------------------ *
  *  Kıvılcım — tema tokenları
- *  Varsayılan: krem / açık.  Koyu: sıcak antrasit.
- *  Sıra: :root (açık) → sistem-koyu → [data-theme] override.
- *
- *  DİKKAT: aşağıdaki iki koyu blok birebir aynı olmalı. Biri sistem
- *  tercihini, diğeri düğmeyle yapılan seçimi karşılıyor; birine token
- *  eklerken diğerine de ekle.
+ *  Tek tema: sıcak antrasit (koyu). Açık/koyu seçimi kaldırıldı.
  * ------------------------------------------------------------------ */
 
 :root {
-  --bg-0: #f4efe2;
-  --bg-1: #efe8d6;
-  --paper: #fbf7ec;
-
-  --surface: rgba(60, 45, 25, 0.035);
-  --surface-strong: rgba(60, 45, 25, 0.06);
-  --line: rgba(55, 42, 24, 0.14);
-  --line-strong: rgba(55, 42, 24, 0.26);
-
-  /* Tum arayuz metni tek renkte; hiyerarsi boyut, agirlik ve harf araligindan
-     gelir. --dim / --faint geriye donuk uyumluluk icin --text'e baglandi. */
-  --text: #2c2620;
-  --text-dim: var(--text);
-  --text-faint: var(--text);
-
-  --spark: #c8622f;
-  --spark-soft: #b1531f;
-  --calm: #5f8a80;
-
-  --glow-spark: rgba(200, 98, 47, 0.24);
-  --glow-calm: rgba(95, 138, 128, 0.22);
-
-  --inset: rgba(50, 38, 20, 0.05);
-  --spark-tint: rgba(200, 98, 47, 0.1);
-  --on-accent: #fbf7ec;
-
-  /* --- Cam malzeme ------------------------------------------------ */
-  --glass-bg: rgba(255, 252, 246, 0.15);
-  --glass-gloss: linear-gradient(
-    177deg,
-    rgba(255, 255, 255, 0.32),
-    rgba(255, 255, 255, 0.02) 42%,
-    rgba(255, 255, 255, 0.1)
-  );
-  --glass-sheen: rgba(255, 255, 255, 0.72);
-  --glass-sheen-b: rgba(255, 255, 255, 0.26);
-  --glass-inner: rgba(255, 255, 255, 0.24);
-  /* Kırılan kenar: üst-solda parlak, altta sönük */
-  --glass-rim-hi: rgba(255, 255, 255, 0.95);
-  --glass-rim-lo: rgba(120, 98, 66, 0.16);
-  --glass-shadow: 0 18px 40px -28px rgba(92, 74, 48, 0.42);
-  --glass-blur: blur(32px) saturate(195%);
-
-  /* Camın kıracağı arka plan kürecikleri */
-  --orb-1: rgba(200, 98, 47, 0.2);
-  --orb-2: rgba(95, 138, 128, 0.17);
-  --orb-3: rgba(224, 178, 92, 0.26);
-
-  --grain-opacity: 0.05;
-  --grain-blend: multiply;
-
-  --halo-1: rgba(200, 98, 47, 0.1);
-  --halo-2: rgba(95, 138, 128, 0.08);
-  --halo-3: rgba(224, 178, 92, 0.14);
-
-  --radius: 20px;
-  --radius-sm: 12px;
-
-  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
-  --font-mono: 'Space Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
-
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  /* Basınca hafif geri sekme hissi versin diye hafifçe aşan bir eğri. */
-  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
-
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg-0: #191612;
-    --bg-1: #201c17;
-    --paper: #221e18;
-
-    --surface: rgba(255, 250, 240, 0.035);
-    --surface-strong: rgba(255, 250, 240, 0.065);
-    --line: rgba(255, 248, 235, 0.1);
-    --line-strong: rgba(255, 248, 235, 0.2);
-
-    --text: #ede5d5;
-    --text-dim: var(--text);
-    --text-faint: var(--text);
-
-    --spark: #f0925f;
-    --spark-soft: #e07f4c;
-    --calm: #83bab0;
-
-    --glow-spark: rgba(240, 146, 95, 0.3);
-    --glow-calm: rgba(131, 186, 176, 0.26);
-
-    --inset: rgba(0, 0, 0, 0.24);
-    --spark-tint: rgba(240, 146, 95, 0.13);
-    --on-accent: #201c17;
-
-    --glass-bg: rgba(255, 248, 236, 0.025);
-    --glass-gloss: linear-gradient(
-      177deg,
-      rgba(255, 250, 240, 0.07),
-      rgba(255, 250, 240, 0.004) 42%,
-      rgba(255, 250, 240, 0.022)
-    );
-    --glass-sheen: rgba(255, 250, 240, 0.19);
-    --glass-sheen-b: rgba(255, 250, 240, 0.045);
-    --glass-inner: rgba(255, 250, 240, 0.06);
-    --glass-rim-hi: rgba(255, 250, 240, 0.34);
-    --glass-rim-lo: rgba(255, 248, 235, 0.05);
-    --glass-shadow: 0 22px 44px -30px rgba(0, 0, 0, 0.72);
-    --glass-blur: blur(34px) saturate(175%);
-
-    --orb-1: rgba(240, 146, 95, 0.2);
-    --orb-2: rgba(131, 186, 176, 0.15);
-    --orb-3: rgba(150, 110, 220, 0.12);
-
-    --grain-opacity: 0.055;
-    --grain-blend: overlay;
-
-    --halo-1: rgba(240, 146, 95, 0.12);
-    --halo-2: rgba(131, 186, 176, 0.08);
-    --halo-3: rgba(120, 90, 190, 0.1);
-
-    color-scheme: dark;
-  }
-}
-
-:root[data-theme='dark'] {
   --bg-0: #191612;
   --bg-1: #201c17;
   --paper: #221e18;
@@ -143,6 +13,8 @@
   --line: rgba(255, 248, 235, 0.1);
   --line-strong: rgba(255, 248, 235, 0.2);
 
+  /* Tum arayuz metni tek renkte; hiyerarsi boyut, agirlik ve harf araligindan
+     gelir. --dim / --faint geriye donuk uyumluluk icin --text'e baglandi. */
   --text: #ede5d5;
   --text-dim: var(--text);
   --text-faint: var(--text);
@@ -158,6 +30,7 @@
   --spark-tint: rgba(240, 146, 95, 0.13);
   --on-accent: #201c17;
 
+  /* --- Cam malzeme ------------------------------------------------ */
   --glass-bg: rgba(255, 248, 236, 0.025);
   --glass-gloss: linear-gradient(
     177deg,
@@ -168,11 +41,13 @@
   --glass-sheen: rgba(255, 250, 240, 0.19);
   --glass-sheen-b: rgba(255, 250, 240, 0.045);
   --glass-inner: rgba(255, 250, 240, 0.06);
+  /* Kırılan kenar: üst-solda parlak, altta sönük */
   --glass-rim-hi: rgba(255, 250, 240, 0.34);
   --glass-rim-lo: rgba(255, 248, 235, 0.05);
   --glass-shadow: 0 22px 44px -30px rgba(0, 0, 0, 0.72);
   --glass-blur: blur(34px) saturate(175%);
 
+  /* Camın kıracağı arka plan kürecikleri */
   --orb-1: rgba(240, 146, 95, 0.2);
   --orb-2: rgba(131, 186, 176, 0.15);
   --orb-3: rgba(150, 110, 220, 0.12);
@@ -183,6 +58,16 @@
   --halo-1: rgba(240, 146, 95, 0.12);
   --halo-2: rgba(131, 186, 176, 0.08);
   --halo-3: rgba(120, 90, 190, 0.1);
+
+  --radius: 20px;
+  --radius-sm: 12px;
+
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Palatino, serif;
+  --font-mono: 'Space Mono', 'SFMono-Regular', ui-monospace, Menlo, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Basınca hafif geri sekme hissi versin diye hafifçe aşan bir eğri. */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   color-scheme: dark;
 }
@@ -442,10 +327,16 @@ h3 {
  * daha önce tanımlanan bir :active kuralı fare basılıyken de hover'a
  * kaybediyor ve animasyon hiç görünmüyordu. Tek kural = her buton tipinde
  * birebir aynı basma hissi.
+ *
+ * :is(:active, [data-pressed]) — [data-pressed], trackpad'de hafif dokunma
+ * gibi çok kısa basışlarda :active hiç boyanmadan bitebildiği için
+ * src/lib/pressFeedback.ts tarafından JS ile eklenen bir işaretleyici;
+ * animasyonun hem gerçek basılı tutmada hem hafif dokunuşta çalışmasını
+ * sağlıyor.
  */
-.btn:active:not(:disabled),
-.btn--primary:active:not(:disabled),
-.btn--ghost:active:not(:disabled) {
+.btn:is(:active, [data-pressed]):not(:disabled),
+.btn--primary:is(:active, [data-pressed]):not(:disabled),
+.btn--ghost:is(:active, [data-pressed]):not(:disabled) {
   transition: transform 0.05s ease-out;
   transform: translateY(0) scale(0.86);
 }

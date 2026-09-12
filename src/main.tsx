@@ -1,8 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
+import { initPressFeedback } from './lib/pressFeedback'
 import './styles/theme.css'
 import './styles/animations.css'
+
+initPressFeedback()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -87,7 +87,13 @@
   animation: thumb-pulse 2.2s ease-in-out infinite;
 }
 
-.range::-webkit-slider-thumb:active {
+/*
+ * ::-webkit-slider-thumb bir pseudo-element, [data-pressed] onun üstüne
+ * konamaz — bu yüzden işaretleyici asıl <input>'a (.range) konuyor ve
+ * pseudo-element'e oradan erişiliyor.
+ */
+.range:active::-webkit-slider-thumb,
+.range[data-pressed]::-webkit-slider-thumb {
   cursor: grabbing;
   transform: scale(1.12);
 }
@@ -103,7 +109,8 @@
   animation: thumb-pulse 2.2s ease-in-out infinite;
 }
 
-.range::-moz-range-thumb:active {
+.range:active::-moz-range-thumb,
+.range[data-pressed]::-moz-range-thumb {
   cursor: grabbing;
   transform: scale(1.12);
 }

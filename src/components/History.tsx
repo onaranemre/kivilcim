@@ -46,6 +46,7 @@ export function History({ rounds, onReplay, onDelete }: Props) {
             <button
               type="button"
               className={styles.del}
+              data-press
               aria-label="Bu turu geçmişten sil"
               onClick={() => onDelete(round.id)}
             >
