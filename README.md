@@ -18,7 +18,7 @@ Müzisyen bir süre (15–60 dk) seçer, beş yaratıcı zarı tek tek atar
 - Sayaç turu sırasında zarlara dönüp tekrar sayaca geçilebilir (sayaç arka planda sürer)
 - Krem/açık varsayılan tema; sistem koyu moddaysa otomatik koyu; sağ üstteki
   düğmeyle elle değiştirilir ve tercih saklanır
-- Tüm arayüz metni küçük harf; `prefers-reduced-motion` desteği; mobil uyumlu
+- `prefers-reduced-motion` desteği; mobil uyumlu
 
 ## Geliştirme
 

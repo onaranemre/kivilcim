@@ -74,6 +74,8 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
       {phase === 'settling' && <span className={styles.ripple} aria-hidden />}
 
       <div className={styles.body} aria-live="polite">
+        <span className={styles.title}>{meta.title}</span>
+
         {phase === 'shaking' ? (
           <span className={`${styles.face} ${styles.tumbling}`} aria-hidden>
             <DieFace face={face} />
@@ -83,7 +85,7 @@ export const DieCard = forwardRef<DieHandle, Props>(function DieCard(
             {result.label}
           </span>
         ) : (
-          <span className={styles.label}>{meta.title}</span>
+          <span className={styles.hint}>{meta.hint}</span>
         )}
       </div>
     </article>

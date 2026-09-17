@@ -68,6 +68,33 @@
   animation: rail-in 0.5s var(--ease-out) 1;
 }
 
+/* Zarlar ekranındaki "zar at / kendin yaz" seçici — ghost butonlarla aynı
+   nötr krom malzeme, turuncu sadece asıl CTA'lara ayrılsın diye. Actions
+   satırının (bkz. DiceBoard/ManualBoard) tam ortasına yerleşiyor. */
+.modeToggleWrap {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.modeToggleBtn {
+  padding: 5px 13px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  color: var(--text-faint);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.modeToggleBtn[data-active='true'] {
+  background: var(--surface-strong);
+  color: var(--text);
+}
+
 .stageNav {
   display: flex;
   flex-wrap: wrap;
@@ -174,6 +201,9 @@ button.notesFab {
  * sekme. İç içerik (.notesPaneInner) her zaman hedef genişlikte kalır ki
  * açılırken/kapanırken metin sıkışıp reflow olmasın — dıştaki .notesPane
  * sadece bir "görünüm penceresi" gibi genişliği animasyonla açar/kapatır.
+ * 640px altında (bkz. useIsMobile) App.tsx artık width yerine hiç inline
+ * stil basmıyor — bu yüzden aşağıdaki mobil medya sorgusu, sağ bölmeyi
+ * dokunuşla kapatılabilen, alttan açılan bir sayfaya dönüştürebiliyor.
  */
 .notesPane {
   flex: none;
@@ -188,11 +218,68 @@ button.notesFab {
 }
 
 .notesPaneInner {
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 18px 20px calc(20px + env(safe-area-inset-bottom));
+}
+
+@keyframes notes-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.notesBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 55;
+  animation: notes-backdrop-in 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .notesPane {
+    position: fixed;
+    inset: auto 0 0 0;
+    top: auto;
+    align-self: auto;
+    width: 100%;
+    height: min(82dvh, 640px);
+    border-left: none;
+    border-top: 1px solid var(--line);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -20px 50px -20px rgba(0, 0, 0, 0.6);
+    transform: translateY(100%);
+    transition: transform 0.32s var(--ease-out);
+    z-index: 60;
+  }
+
+  .notesPane[data-mobile-open='true'] {
+    transform: translateY(0);
+  }
+
+  /* Yerli bir alt sayfa hissi versin diye üstte tutamaç çubuğu. */
+  .notesPane::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 36px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--line-strong);
+    transform: translateX(-50%);
+  }
+
+  .notesPaneInner {
+    padding-top: 26px;
+  }
 }
 
 /*

@@ -3,11 +3,14 @@ import type { DieId } from './data/dice'
 import type { DieResult, ResultMap, Screen } from './types'
 import { DurationPicker } from './components/DurationPicker'
 import { DiceBoard } from './components/DiceBoard'
+import { ManualBoard } from './components/ManualBoard'
+import { DiceProgress } from './components/DiceProgress'
 import { SessionTimer } from './components/SessionTimer'
 import { History } from './components/History'
 import { DieFace } from './components/DieFace'
 import { useCountdown } from './hooks/useCountdown'
 import { useHistory, sameRound, type HistoryRound } from './hooks/useHistory'
+import { useIsMobile } from './hooks/useIsMobile'
 import styles from './App.module.css'
 
 const EMPTY_RESULTS: ResultMap = {
@@ -22,6 +25,10 @@ export default function App() {
   const [screen, setScreen] = useState<Screen>('setup')
   const [minutes, setMinutes] = useState(30)
   const [results, setResults] = useState<ResultMap>(EMPTY_RESULTS)
+  // Zar atmak yerine kullanıcı kendi tarz/duygu/kural/perspektif/kelimesini
+  // yazabilsin diye eklenen ikinci mod. Aynı results state'ini paylaşır —
+  // moddan moda geçince doldurulanlar kaybolmaz.
+  const [mode, setMode] = useState<'dice' | 'manual'>('dice')
   const [notes, setNotes] = useState('')
   const [currentRoundId, setCurrentRoundId] = useState<string | null>(null)
 
@@ -36,6 +43,10 @@ export default function App() {
   // görünüyordu. Sadece açma/kapama geçişinde animasyon kalsın istiyoruz.
   const [isResizingNotes, setIsResizingNotes] = useState(false)
   const draggingNotes = useRef(false)
+  // Mobilde yan bölme yerine alttan çıkan bir sayfa: dar ekranda genişlik
+  // sürüklemesinin bir anlamı yok (dokunmatikte zaten çalışmıyor) ve tam
+  // genişlik bir bölme yerine daha tanıdık, daha verimli bir mobil kalıp.
+  const isMobile = useIsMobile(640)
 
   const timer = useCountdown()
   const history = useHistory()
@@ -43,7 +54,7 @@ export default function App() {
   const anyRolled = Object.values(results).some(Boolean)
   const hasProgress = timer.active || anyRolled
 
-  const commit = (dieId: DieId, result: DieResult) => {
+  const commit = (dieId: DieId, result: DieResult | null) => {
     setResults((prev) => ({ ...prev, [dieId]: result }))
   }
 
@@ -117,6 +128,7 @@ export default function App() {
   const restart = () => {
     timer.stop()
     setResults(EMPTY_RESULTS)
+    setMode('dice')
     setNotes('')
     setCurrentRoundId(null)
     setScreen('setup')
@@ -150,6 +162,34 @@ export default function App() {
     setCurrentRoundId(round.id)
     setScreen('rolling')
   }
+
+  // "hepsini at" ile "şarkıya başla" butonlarının tam ortasına otursun diye
+  // (bkz. DiceBoard/ManualBoard'daki .actions) burada tek yerde kuruluyor,
+  // her iki board'a aynı öğe prop olarak geçiriliyor.
+  const modeToggle = (
+    <div className={styles.modeToggleWrap} role="tablist" aria-label="zar modu">
+      <button
+        type="button"
+        role="tab"
+        aria-selected={mode === 'dice'}
+        className={styles.modeToggleBtn}
+        data-active={mode === 'dice'}
+        onClick={() => setMode('dice')}
+      >
+        zar at
+      </button>
+      <button
+        type="button"
+        role="tab"
+        aria-selected={mode === 'manual'}
+        className={styles.modeToggleBtn}
+        data-active={mode === 'manual'}
+        onClick={() => setMode('manual')}
+      >
+        kendin yaz
+      </button>
+    </div>
+  )
 
   return (
     <div className={styles.splitRoot}>
@@ -193,7 +233,30 @@ export default function App() {
                 </button>
               )}
             </div>
-            <DiceBoard results={results} onCommit={commit} onStart={startSession} />
+
+            {/* Moddan moda geçince yeniden monte olmasın diye (aksi halde dolu
+                noktalar her geçişte "pop" animasyonunu tekrar oynatıyordu) nokta
+                göstergesi burada, iki board'un da dışında, tek bir yerde duruyor. */}
+            <DiceProgress
+              results={results}
+              filledLabel={mode === 'dice' ? 'zar atıldı' : 'dolduruldu'}
+            />
+
+            {mode === 'dice' ? (
+              <DiceBoard
+                results={results}
+                onCommit={commit}
+                onStart={startSession}
+                modeToggle={modeToggle}
+              />
+            ) : (
+              <ManualBoard
+                results={results}
+                onCommit={commit}
+                onStart={startSession}
+                modeToggle={modeToggle}
+              />
+            )}
           </section>
         )}
 
@@ -240,16 +303,36 @@ export default function App() {
         )}
       </main>
 
-      {notesOpen && <div className={styles.splitDivider} onMouseDown={onDividerDown} />}
+      {notesOpen && !isMobile && (
+        <div className={styles.splitDivider} onMouseDown={onDividerDown} />
+      )}
+
+      {/* Mobilde bölme, ekranın geri kalanını karartan bir zemin üstünde
+          alttan açılan bir sayfaya dönüşüyor — dokunma ile kapatılabilir. */}
+      {notesOpen && isMobile && (
+        <div
+          className={styles.notesBackdrop}
+          onClick={() => setNotesOpen(false)}
+          aria-hidden
+        />
+      )}
 
       <aside
         className={styles.notesPane}
-        style={{
-          width: notesOpen ? notesWidth : 0,
-          transition: isResizingNotes ? 'none' : undefined,
-        }}
+        data-mobile-open={isMobile ? notesOpen : undefined}
+        style={
+          isMobile
+            ? undefined
+            : {
+                width: notesOpen ? notesWidth : 0,
+                transition: isResizingNotes ? 'none' : undefined,
+              }
+        }
       >
-        <div className={styles.notesPaneInner} style={{ width: notesWidth }}>
+        <div
+          className={styles.notesPaneInner}
+          style={isMobile ? undefined : { width: notesWidth }}
+        >
           <div className={styles.notesPaneHeader}>
             <span>not defteri</span>
             <button

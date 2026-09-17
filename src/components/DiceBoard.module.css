@@ -4,28 +4,6 @@
   gap: 24px;
 }
 
-.progress {
-  display: flex;
-  justify-content: center;
-  gap: 9px;
-}
-
-.dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: transparent;
-  border: 1px solid var(--line-strong);
-  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-}
-
-.dot[data-on='true'] {
-  background: var(--spark);
-  border-color: var(--spark);
-  box-shadow: 0 0 10px var(--glow-spark);
-  animation: dot-pop 0.4s var(--ease-out) 1;
-}
-
 .grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -45,27 +23,49 @@
   }
 }
 
+/*
+ * 3 sütun: sol (hepsini at) ve sağ (şarkıya başla) kenarlara, seçici
+ * (auto sütun) ikisi eşit genişlikte olduğu için tam ortaya oturuyor —
+ * butonların genişliği ne olursa olsun.
+ */
 .actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   padding-top: 4px;
 }
 
-.waiting {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: lowercase;
-  color: var(--text-faint);
-  padding: 0 6px;
+.actions > button:first-child {
+  justify-self: start;
+}
+
+.actions > button:last-child {
+  justify-self: end;
 }
 
 @media (max-width: 560px) {
   .actions {
-    flex-direction: column-reverse;
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 16px;
+  }
+
+  .actions > button:first-child,
+  .actions > button:last-child {
+    justify-self: stretch;
+  }
+
+  /*
+   * Dar ekranda sıra: seçici, hepsini at, şarkıya başla — asıl CTA en altta.
+   * ManualBoard'da da aynı sıra (görünmez hepsini at dahil) korunuyor ki
+   * iki modda her şey aynı konumda kalsın.
+   */
+  .actions > button:first-child {
+    order: 1;
+  }
+
+  .actions > button:last-child {
+    order: 2;
   }
 }

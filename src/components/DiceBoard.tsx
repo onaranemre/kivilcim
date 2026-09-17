@@ -1,4 +1,5 @@
 import { useRef } from 'react'
+import type { ReactNode } from 'react'
 import { DICE } from '../data/dice'
 import type { DieId } from '../data/dice'
 import type { DieHandle, DieResult, ResultMap } from '../types'
@@ -9,9 +10,10 @@ interface Props {
   results: ResultMap
   onCommit: (dieId: DieId, result: DieResult) => void
   onStart: () => void
+  modeToggle: ReactNode
 }
 
-export function DiceBoard({ results, onCommit, onStart }: Props) {
+export function DiceBoard({ results, onCommit, onStart, modeToggle }: Props) {
   const handles = useRef<Record<string, DieHandle | null>>({})
   const rolled = DICE.filter((d) => results[d.id]).length
   const allRolled = rolled === DICE.length
@@ -24,16 +26,6 @@ export function DiceBoard({ results, onCommit, onStart }: Props) {
 
   return (
     <div className={styles.board}>
-      <div
-        className={styles.progress}
-        role="img"
-        aria-label={`${rolled}/${DICE.length} zar atıldı`}
-      >
-        {DICE.map((d) => (
-          <span key={d.id} className={styles.dot} data-on={Boolean(results[d.id])} />
-        ))}
-      </div>
-
       <div className={styles.grid}>
         {DICE.map((meta) => (
           <DieCard
@@ -53,15 +45,21 @@ export function DiceBoard({ results, onCommit, onStart }: Props) {
           ⟳ hepsini at
         </button>
 
-        {allRolled ? (
-          <button type="button" className="btn btn--primary" onClick={onStart}>
-            şarkıya başla →
-          </button>
-        ) : (
-          <span className={styles.waiting}>
-            {rolled}/{DICE.length} zar atıldı
-          </span>
-        )}
+        {modeToggle}
+
+        {/* Zarlar bitmeden de yer kaplıyor (görünmez) — buton belirince
+            satır uzayıp seçici kaymasın, sayfa boyu sabit kalsın. */}
+        <button
+          type="button"
+          className="btn btn--primary"
+          onClick={onStart}
+          disabled={!allRolled}
+          aria-hidden={!allRolled}
+          tabIndex={allRolled ? undefined : -1}
+          style={allRolled ? undefined : { visibility: 'hidden' }}
+        >
+          şarkıya başla →
+        </button>
       </div>
     </div>
   )

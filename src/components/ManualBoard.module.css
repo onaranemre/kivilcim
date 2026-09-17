@@ -1,0 +1,189 @@
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/*
+ * DiceBoard'daki .grid ile birebir aynı düzen: 4 kategori üstte iki sütun,
+ * kelime alanı altta tam genişlikte — iki moddan birine geçince ekran
+ * sıçramasın diye.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.grid > :last-child {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .grid > :last-child {
+    grid-column: auto;
+  }
+}
+
+/* Die.module.css'teki .card ile aynı cam malzeme — sadece atılabilir değil, yazılabilir. */
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 168px;
+  padding: 24px 22px;
+  /* DieCard .body ile aynı: sabit üst boşluk, uzun metin aşağı uzasın. */
+  padding-top: calc(24px + var(--card-offset));
+  border-radius: var(--radius);
+  background: var(--glass-gloss), var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    inset 0 22px 40px -34px var(--glass-inner),
+    var(--glass-shadow);
+  cursor: text;
+  transition: box-shadow 0.3s ease;
+}
+
+.field::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    155deg,
+    var(--glass-rim-hi),
+    transparent 38%,
+    transparent 62%,
+    var(--glass-rim-lo)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Odaklanınca kart hafifçe ışıldar — girdi kutusunun kendi outline'ı yerine tek, tutarlı bir işaret. */
+.field:focus-within {
+  box-shadow:
+    inset 0 1px 0 var(--glass-sheen),
+    inset 0 -1px 0 var(--glass-sheen-b),
+    0 0 0 1px var(--spark),
+    0 20px 40px -26px var(--glow-spark);
+}
+
+.fieldLabel {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: var(--card-title-lh);
+  letter-spacing: 0.18em;
+  color: var(--text-faint);
+}
+
+/*
+ * <input>'lar body'nin text-transform: lowercase'ini miras almıyor (form
+ * kontrollerinin UA stili bunu kırıyor) — zar atıp buraya geçince havuzdaki
+ * Büyük Harfle Başlayan değerler burada büyük harfli kalıyordu. Açıkça
+ * belirtiyoruz ki hem yazılanlar hem zardan gelenler burada da küçük kalsın.
+ */
+.input {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  outline: none;
+  /*
+   * overflow:hidden, satır kutusundan taşan harf kuyruklarını (g, ğ, y, ş…)
+   * kesiyordu. Üst/alt iç boşluk çizim alanını genişletiyor; aynı miktarda
+   * negatif margin ise yerleşimdeki boyu değiştirmiyor — zar at kartlarıyla
+   * konumlar birebir aynı kalıyor.
+   */
+  padding: 0.2em 0;
+  margin: -0.2em 0;
+  font-family: var(--font-display);
+  /* Die.module.css'teki .hint/.value ile birebir aynı ölçek — zar at
+     kartlarındaki metinle burdaki aynı büyüklükte görünsün. */
+  font-size: var(--card-value-size);
+  line-height: 1.18;
+  color: var(--text);
+  text-transform: lowercase;
+  /* <textarea> — uzun cümleler zar at kartlarındaki gibi alt satıra
+     geçebilsin diye. Yükseklik yazıya göre ayarlanıyor (field-sizing,
+     yoksa JS autoResize); kendi kaydırma çubuğu/sürüklenebilir köşesi olmasın. */
+  resize: none;
+  overflow: hidden;
+  /*
+   * Destekleyen tarayıcılarda (field-sizing) textarea'nın kendi dahili
+   * satır-yüksekliği hesaplaması bir .value <span>'inden ~0.3-0.6px daha
+   * uzun çıkıyordu — ortalanan içerik bu yüzden zar at karşılığından bir
+   * kılpayı kayıyordu. field-sizing:content tarayıcının bunu span'lerle
+   * birebir aynı, gerçek içerik boyutuna göre hesaplamasını sağlıyor;
+   * desteklemeyen tarayıcılarda JS'teki autoResize (aşağıda) devreye giriyor.
+   */
+  field-sizing: content;
+}
+
+.input::placeholder {
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+/*
+ * Kart zaten :focus-within ile kendi turuncu parıltısını veriyor — input'un
+ * kendi outline'ı da görünürse çift çerçeve gibi kalabalık duruyor. Global
+ * :focus-visible (theme.css) ile eşit özgüllükte (0,1,0) olduğu için kaynak
+ * sırası garanti değil; :focus-visible ekleyip (0,2,0) özgüllükle kesin kazanıyoruz.
+ */
+.input:focus-visible {
+  outline: none;
+}
+
+/* DiceBoard'daki .actions ile aynı 3 sütunlu ızgara — seçici, soldaki
+   görünmez hepsini at ile sağdaki başla butonu arasında tam ortada duruyor,
+   iki modda da aynı konumda kalıyor. */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.actions > button:first-child {
+  justify-self: start;
+}
+
+.actions > button:last-child {
+  justify-self: end;
+}
+
+/* DiceBoard.module.css ile birebir aynı: seçici, (görünmez) hepsini at, şarkıya başla. */
+@media (max-width: 560px) {
+  .actions {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 16px;
+  }
+
+  .actions > button:first-child,
+  .actions > button:last-child {
+    justify-self: stretch;
+  }
+
+  .actions > button:first-child {
+    order: 1;
+  }
+
+  .actions > button:last-child {
+    order: 2;
+  }
+}

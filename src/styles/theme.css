@@ -30,6 +30,17 @@
   --spark-tint: rgba(240, 146, 95, 0.13);
   --on-accent: #201c17;
 
+  /* --- Zar / kendin yaz kartları ---------------------------------- *
+   * İki moddaki kartların iç yerleşimi tek yerden: tek satırlık içerik
+   * 168px'lik kartta dikey ortalı görünsün diye hesaplanan sabit üst
+   * boşluk (120 = 168 − 2×24 iç boşluk; 10 = başlık ile metin arası).  */
+  --card-value-size: clamp(21px, 3.6vw, 30px);
+  --card-title-lh: 14.5px;
+  --card-offset: max(
+    0px,
+    calc((120px - var(--card-title-lh) - 10px - var(--card-value-size) * 1.18) / 2)
+  );
+
   /* --- Cam malzeme ------------------------------------------------ */
   --glass-bg: rgba(255, 248, 236, 0.025);
   --glass-gloss: linear-gradient(
@@ -80,6 +91,17 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+
+/*
+ * Dikey kaydırma çubuğu için her zaman yer ayır. Aksi halde, sayfa yüksekliği
+ * viewport eşiğinin az altında/üstünde kalan içerikler arasında geçiş
+ * yapılınca (örn. zar at ↔ kendin yaz — kendin yaz'daki kelime alanı
+ * placeholder'ı biraz daha uzun) kaydırma çubuğu görünüp kayboluyor, bu da
+ * ortalanmış öğelerin (örn. mod seçicisi) birkaç piksel kaymasına yol açıyor.
+ */
+html {
+  scrollbar-gutter: stable;
 }
 
 body {

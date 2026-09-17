@@ -14,7 +14,7 @@ export const DICE: DieMeta[] = [
   { id: 'emotion', title: 'Duygu', hint: 'Nereden besleniyor?' },
   { id: 'rule', title: 'Kural', hint: 'Kendine bir sınır çiz.' },
   { id: 'perspective', title: 'Perspektif', hint: 'Kimin ağzından?' },
-  { id: 'word', title: 'Kelime', hint: 'Üç kelime. Kaçış yok.', draw: 3 },
+  { id: 'word', title: 'Kelime', hint: 'Üç kelime, tek şarkı.', draw: 3 },
 ]
 
 export const STYLES: string[] = [
